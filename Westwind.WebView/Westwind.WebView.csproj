@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net472; net60-windows;net70-windows</TargetFrameworks>
+		<UseWPF>true</UseWPF>
+		<Version>0.1</Version>
+		<Authors>Rick Strahl</Authors>
+		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+		<Language>en-US</Language>
+		<AssemblyName>Westwind.WebView</AssemblyName>
+		<AssemblyTitle>West Wind WebView Interop Helpers</AssemblyTitle>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<PackageId>Westwind.WebView</PackageId>
+		<RootNamespace>Westwind.WebView</RootNamespace>
+		<Title>West Wind WebView Interop Helpers</Title>
+		<Description>A small helper library for the Microsoft.WebView control for WPF</Description>
+		<Summary>A small helper library that provide a base behavior class that wraps initialization and provides Interop functionality.</Summary>
+		<PackageCopyright>Rick Strahl, West Wind Technologies 2023</PackageCopyright>
+		<PackageTags>WebView Westwind</PackageTags>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageProjectUrl>http://github.com/rickstrahl/westwind.webview</PackageProjectUrl>
+		<PackageIcon>icon.png</PackageIcon>
+		<PackageLicense>LICENSE.MD</PackageLicense>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Copyright>Rick Strahl, West Wind Technologies, 2023</Copyright>
+		<RepositoryType>Github</RepositoryType>
+		<Company>West Wind Technologies</Company>
+		<RepositoryUrl>https://github.com/RickStrahl/Westwind.WebView</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<DebugType>embedded</DebugType>
+		<NoWarn>$(NoWarn);CS1591;CS1572;CS1573</NoWarn>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+
+		<PackageOutputPath>./nupkg</PackageOutputPath>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+		<DefineConstants>RELEASE</DefineConstants>
+	</PropertyGroup>
+	
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1518.46" />
+	  <PackageReference Include="Westwind.Utilities" Version="3.1.18" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" PackagePath="" />
+		<None Include="LICENSE.MD" Pack="true" PackagePath="" />
+	</ItemGroup>
+</Project>
