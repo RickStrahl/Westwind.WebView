@@ -1,6 +1,8 @@
 # Westwind.WebView Interop Helpers
 
-A support library for the `Microsoft.Web.WebView2` control to aid with common operations and .NET / JavaScript interop.
+A .NET support library for the `Microsoft.Web.WebView2` control to aid with common operations and .NET / JavaScript interop.
+
+> This is an internal library and I'm opening this up for reference in various posts and support tools. It's not well documented at this time. 
 
 The library provides:
 
@@ -8,7 +10,7 @@ The library provides:
 and provides built in Interop support
 * A JavaScript Interop class that simplifies calling into JavaScript from .NET
 
-The WebView Handler is meant to be used when you need to do a lot of Interop between your .NET and JavaScript code. It ties together the WebView intialization, calling of methods in JavaScript and receiving callbacks back into .NET from JavaScript and hooking common events that you might have to deal with.
+The WebView Handler is meant to be used when you need to do a lot of Interop between your .NET and JavaScript code. It ties together the WebView initialization, calling of methods in JavaScript and receiving callbacks back into .NET from JavaScript and hooking common events that you might have to deal with.
 
 ## Installation
 To install the library install the NuGet package from:
@@ -18,7 +20,7 @@ install-package Westwind.WebView
 ```
 
 ## WebViewHandler Usage
-The WebView Handler is primarily meant to be used when you need to do a lot of Interop between your .NET and JavaScript code. It ties together the WebView intialization, calling of methods in JavaScript and receiving callbacks back into .NET from JavaScript. Initialization initializes the WebView but also provides hooks for when content has loaded so you can start running JavaScript code and pass in state when the WebView initially loads.
+The WebView Handler is primarily meant to be used when you need to do a lot of Interop between your .NET and JavaScript code. It ties together the WebView initialization, calling of methods in JavaScript and receiving callbacks back into .NET from JavaScript. Initialization initializes the WebView but also provides hooks for when content has loaded so you can start running JavaScript code and pass in state when the WebView initially loads.
 
 There are three distinct components:
 
