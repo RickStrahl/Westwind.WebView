@@ -306,9 +306,19 @@ namespace Westwind.WebView.Wpf
         /// Navigates the browser to a URL or file
         /// </summary>
         /// <param name="url"></param>
-        public void Navigate(string url)
+        public virtual void Navigate(string url, bool forceRefresh = false)
         {
+            if (string.IsNullOrEmpty(url)) return;
+
             IsLoaded = false;
+
+            if (forceRefresh)
+            {
+                WebBrowser.Source = new Uri("about:blank"); //  can't be null, has to be a uri
+                WebBrowser.Dispatcher.Invoke(() => WebBrowser.Source = new Uri(url));
+                return;
+            }
+
             WebBrowser.Source = new Uri(url);
         }
 
@@ -316,9 +326,17 @@ namespace Westwind.WebView.Wpf
         /// Navigates the browser to a URL or file
         /// </summary>
         /// <param name="uri"></param>
-        public void Navigate(Uri uri)
+        public virtual void Navigate(Uri uri, bool forceRefresh = false)
         {
+            if (uri == null) return;
+
             IsLoaded = false;
+            if (forceRefresh)
+            {
+                WebBrowser.Source = new Uri("about:blank");  //  can't be null, has to be a uri
+                WebBrowser.Dispatcher.Invoke(() => WebBrowser.Source = uri);
+                return;
+            }
             WebBrowser.Source = uri;
         }
 
@@ -334,10 +352,15 @@ namespace Westwind.WebView.Wpf
             {
                 var source = WebBrowser.Source;
                 WebBrowser.Source = new Uri("about:blank");  //  can't be null, has to be a uri
-                WebBrowser.Source = source;  // this forces a refresh
+                var url = WebBrowser.Source?.ToString();
+                if (!string.IsNullOrEmpty(url))
+                {
+                    WebBrowser.Dispatcher.Invoke(() => WebBrowser.Source = new Uri(url));
+                    return;
+                }
             }
-            else
-                WebBrowser.CoreWebView2.Reload();
+            
+            WebBrowser.CoreWebView2.Reload();
         }
 
         #endregion
