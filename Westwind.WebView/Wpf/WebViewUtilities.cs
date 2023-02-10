@@ -17,6 +17,7 @@ namespace Westwind.WebView.Wpf
         /// <summary>
         /// This method checks to see if the WebView runtime is installed. It doesn't
         /// check for a specific version, just whether the runtime is installed at all.
+        /// For a specific version check use IsWebViewVersionInstalled()
         /// 
         /// HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}
         /// HKEY_CURRENT_USER\Software\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5
@@ -40,6 +41,7 @@ namespace Westwind.WebView.Wpf
 
             return false;
         }
+
 
         /// <summary>
         /// This method checks to see if the WebView runtime is installed and whether it's
@@ -86,6 +88,9 @@ namespace Westwind.WebView.Wpf
         /// </returns>
         public static bool RemoveEnvironmentFolder(string folder)
         {
+            if (string.IsNullOrEmpty(folder))
+                return false;
+
             var checkPath = Path.Combine(folder, "EbWebView");
             if (Directory.Exists(checkPath))
             {
