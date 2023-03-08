@@ -3,7 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Linq;
-using Westwind.Utilities;
+using Westwind.WebView.Utilities;
 
 namespace Westwind.WebView.Wpf
 {
@@ -54,19 +54,19 @@ namespace Westwind.WebView.Wpf
         /// </summary>
         public static bool IsWebViewVersionInstalled()
         {
-            string versionNo = null;
-            Version asmVersion = null;
-            Version ver = null;
-
             try
             {
-                versionNo = CoreWebView2Environment.GetAvailableBrowserVersionString();
+                var versionNo = CoreWebView2Environment.GetAvailableBrowserVersionString();
 
                 // strip off 'canary' or 'stable' version
-                versionNo = StringUtils.ExtractString(versionNo, "", " ", allowMissingEndDelimiter: true)?.Trim();
-                ver = new Version(versionNo);
+                var at = versionNo.IndexOf(" ");
+                if (at < 1) return false;
+                versionNo = versionNo.Substring(0, at -1);
 
-                asmVersion = typeof(CoreWebView2Environment).Assembly.GetName().Version;
+                //versionNo = StringUtils.ExtractString(versionNo, "", " ", allowMissingEndDelimiter: true)?.Trim();
+                var ver = new Version(versionNo);
+
+                var asmVersion = typeof(CoreWebView2Environment).Assembly.GetName().Version;
 
                 if (ver.Build >= asmVersion.Build)
                     return true;

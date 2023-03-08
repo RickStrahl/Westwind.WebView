@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Threading;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
-using Westwind.Utilities;
+using Westwind.WebView.Utilities;
 
 namespace Westwind.WebView.Wpf
 {
