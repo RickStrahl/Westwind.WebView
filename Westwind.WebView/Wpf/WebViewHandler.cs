@@ -253,11 +253,27 @@ namespace Westwind.WebView.Wpf
 
         #region Event overrides
 
+        /// <summary>
+        /// Fired after a address or link navigation has completed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected virtual void OnNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
         {
             
         }
 
+
+        /// <summary>
+        /// Fired before address or link navigation occurs - allows you to intercept navigation to perform
+        /// non URL based navigation for particular links. Useful for handling app specific links like
+        /// app://dosomething/parm1 for example.
+        ///
+        /// You can also stop navigation (as you would when you intercept with local app logic)
+        /// or change the URL using the event args.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e">event args that allow modifying navigation behavior</param>
         protected virtual  void OnNavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
         {
         }
@@ -272,6 +288,12 @@ namespace Westwind.WebView.Wpf
             //}
         }
 
+        /// <summary>
+        /// Fired when DOM content has completed loading. Allows you access the document saefly after
+        /// it has initially loaded.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected virtual void OnDomContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
         {
 

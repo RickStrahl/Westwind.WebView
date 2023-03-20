@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\MarkdownMonster_Icon_256.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\MarkdownMonster_Icon_256.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1587.40" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Westwind.WebView\Westwind.WebView.csproj" />
+  </ItemGroup>
+
+</Project>

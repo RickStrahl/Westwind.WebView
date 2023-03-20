@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <title>Markdown Monster Emoji Picker</title>
+    <link href="Westwind/Theme.css" rel="stylesheet" />
+    <style>
+        .address {           
+            white-space: pre-line;  
+            padding: 1em;
+            margin: 1em 2em;
+            border: 1px solid #ddd;
+            max-width: 450px;
+        }
+    </style>
+    </head>
+    <body>
+        <div id="app">
+            <h1>Hello World</h1>
+
+            <div class="address">
+                <small><i>address:</i></small>
+                <span>{{ Person.Firstname}}</span> {{Person.Lastname}}                
+                <strong>{{ Person.Company}}</strong>                    
+                {{ Person.Address.City}}
+             </div>
+        
+             <pre>
+             {{ Person}}
+            </pre>
+        </div>
+        
+        
+
+        <script src="Interop.js" type="module"></script>
+    </body>
+</html>
