@@ -170,11 +170,13 @@ namespace Westwind.WebView.Wpf
             WebBrowser = webViewBrowser;
 
             // must be out of band to ensure all Properties are set and initialized
+            // and to ensure we get a proper WPF Async context
+            ///
             // IMPORTANT: Don't use InvokeAsync() as it will cause
             //            WebView initialization conflicts if multiple
             //            WebView controls are used
             // _ = WebBrowser.Dispatcher.InvokeAsync( async () =>  await InitializeAsync());   // don't use!
-            WebBrowser.Dispatcher.Invoke(  ()=>  InitializeAsync().FireAndForget());
+            WebBrowser.Dispatcher.Invoke(  ()=>  InitializeAsync().FireAndForget() );
         }
 
         /// <summary>
