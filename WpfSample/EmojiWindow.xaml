@@ -47,6 +47,7 @@
         </Grid>
 
         <wpf:WebView2 x:Name="WebBrowser" Grid.Row="1" 
+                      Visibility="Visible" 
                       DefaultBackgroundColor="Transparent" />
 
         <StatusBar  Grid.Row="2" Height="28"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch">

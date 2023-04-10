@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Common;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,6 +16,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using Microsoft.Web.WebView2.Wpf;
+using Westwind.WebView.Wpf;
 
 namespace WpfSample
 {
@@ -23,6 +26,9 @@ namespace WpfSample
     /// </summary>
     public partial class BasicInterop : MetroWindow
     {
+        BasicInteropWebviewHandler WebViewHandler { get;  }
+        
+        
         public BasicInterop()
         {
             InitializeComponent();
@@ -32,6 +38,35 @@ namespace WpfSample
             DataContext = Model;
 
             Loaded += BasicInterop_Loaded;
+
+
+#if DEBUG
+            // for debug use your actual dev source path for the HTML content so you can F5 reload without restart
+            var previewPath = @"d:\projects\Libraries\Westwind.WebView\WpfSample\PreviewThemes";
+            if (!Directory.Exists(previewPath))
+            {
+                previewPath = System.IO.Path.Combine(App.InitialStartDirectory, "PreviewThemes");   // production folder
+            }
+#else
+            // Production uses the runtime location which only updates on compile (unless you change in place)
+            var previewPath = System.IO.Path.Combine(App.InitialStartDirectory,"PreviewThemes");   // production folder
+#endif
+
+            // page to load in WebView
+            var url = "https://WebViewSample.basicinterop/Interop.html";
+            url += "?mode=dark"; // pass dark theme in  (light without this)
+
+            WebViewHandler = new BasicInteropWebviewHandler(WebBrowser,
+                System.IO.Path.Combine(System.IO.Path.GetTempPath(), "WpfSample_WebView"))
+            {
+                // virutal host name for the folder
+                HostWebHostNameForFolder = "WebViewSample.basicinterop",
+                HostWebRootFolder = previewPath,
+
+                // Initial page to load after loading is complete - ensures no invalid URL before host is assigned
+                InitialUrl = url
+            };
+
         }
 
         public BasicInteropModel Model  { get; set; }
@@ -228,6 +263,34 @@ namespace WpfSample
             OnPropertyChanged(propertyName);
             return true;
         }
+    }
+
+    #endregion
+
+
+    #region WebView Handler
+
+    public class BasicInteropWebviewHandler : EmojiWebViewHandler
+    {
+        public BasicInteropWebviewHandler(WebView2 webViewBrowser, string webViewEnvironmentFolder = null,
+            object dotnetCallbackObject = null) :
+            base(webViewBrowser, webViewEnvironmentFolder, dotnetCallbackObject)
+        {
+            JsInterop = new EmojiWebViewInterop(webViewBrowser);
+            HostObject = JsInterop;
+        }
+
+   
+    }
+
+
+    public class BasicInteropWebViewInterop : BaseJavaScriptInterop
+    {
+        public BasicInteropWebViewInterop(WebView2 webView) : base(webView, "window.page")
+        {
+
+        }
+
     }
 
     #endregion

@@ -4,7 +4,7 @@ window.page = {
     person: {
         Firstname: "Rick",
         Lastname: "Strahl",
-        Company: "Wst Wind",
+        Company: "West Wind",
         Email: "",
         Address: {
             Street: "",
@@ -15,7 +15,11 @@ window.page = {
         }
     },
     updatePerson(person) {
-
+        Object.assign(window.page.person, person);
+    },
+    // .NET calls this to explicitly retrieve the value
+    getPerson() {
+        return window.page.person;
     }
 }
 

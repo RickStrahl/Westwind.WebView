@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -27,8 +28,7 @@ namespace WpfSample
     public partial class EmojiWindow : MetroWindow, INotifyPropertyChanged
     {
         public bool Cancelled { get; set; }
-
-
+        
         /// <summary>
         /// Search text is captured in WPF and passed into JavaScript
         ///
@@ -49,11 +49,7 @@ namespace WpfSample
 
         private string _searchText;
 
-        public EmojiWebViewHandler WebViewHandler
-        {
-            get { return _WebViewHandler; }
-            set { _WebViewHandler = value; }
-        }
+        public EmojiWebViewHandler WebViewHandler { get; set; }
 
 
         public string EmojiString
@@ -70,10 +66,6 @@ namespace WpfSample
         private string _emojiString;
 
 
-        private EmojiWebViewHandler _WebViewHandler;
-
-
-
         public EmojiWindow()
         {
 
@@ -81,7 +73,6 @@ namespace WpfSample
 
             DataContext = this;
             ThemeOverride.SetThemeWindowOverride(this, "Dark");
-            
 
 #if DEBUG
             // for debug use your actual dev source path for the HTML content so you can F5 reload without restart
@@ -115,6 +106,7 @@ namespace WpfSample
 
         private void EmojiWindow_Loaded(object sender, RoutedEventArgs e)
         {
+
             if (Owner != null)
             {
                 Top = Owner.Top + 45;
@@ -179,7 +171,7 @@ namespace WpfSample
 
         private void BtnDebugger_OnClick(object sender, RoutedEventArgs e)
         {
-            WebViewHandler.WebBrowser.CoreWebView2.OpenDevToolsWindow();
+            WebViewHandler.WebBrowser?.CoreWebView2?.OpenDevToolsWindow();
         }
     }
 

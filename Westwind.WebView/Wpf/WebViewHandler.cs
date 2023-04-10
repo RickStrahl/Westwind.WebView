@@ -174,7 +174,7 @@ namespace Westwind.WebView.Wpf
             //            WebView initialization conflicts if multiple
             //            WebView controls are used
             // _ = WebBrowser.Dispatcher.InvokeAsync( async () =>  await InitializeAsync());   // don't use!
-            WebBrowser.Dispatcher.Invoke( ()=> InitializeAsync().FireAndForget());
+            WebBrowser.Dispatcher.Invoke(  ()=>  InitializeAsync().FireAndForget());
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Westwind.WebView.Wpf
         /// you call base() to call original functionality
         /// </summary>
         /// <returns></returns>
-        protected virtual async Task InitializeAsync()
+        protected async Task InitializeAsync()
         {
             if (JsInterop == null)
                 JsInterop = CreateJsInteropInstance();
