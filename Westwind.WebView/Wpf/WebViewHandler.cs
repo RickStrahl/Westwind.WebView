@@ -134,6 +134,8 @@ namespace Westwind.WebView.Wpf
         public WebView2 WebBrowser { get; set; }
 
         
+        
+
         /// <summary>
         /// Shortcut to visibility setting
         /// </summary>
@@ -202,6 +204,11 @@ namespace Westwind.WebView.Wpf
                 );
                 await WebBrowser.EnsureCoreWebView2Async(env);
                 IsInitialized = true;
+            }
+
+            if (TrackZoomFactor)
+            {
+                CaptureZoomFactor();
             }
 
             if (ShowDevTools)
@@ -385,6 +392,52 @@ namespace Westwind.WebView.Wpf
             }
             
             WebBrowser.CoreWebView2.Reload();
+        }
+
+        #endregion
+        
+        #region ZoomFactor Tracking 
+        
+        
+        /// <summary>
+        /// If true, tracks the Zoom factor of this browser instance
+        /// over refreshes. By default the WebView looses any user
+        /// zooming via Ctrl+ and Ctrl- or Ctrl-Mousewheel whenever
+        /// the content is reloaded. This settings explicitly keeps
+        /// track of the ZoomFactor and overrides it.
+        /// </summary>
+        public bool TrackZoomFactor { get; set; }
+        
+        public double ZoomLevel { get; set;  }= 1;
+        private bool CaptureZoom = false;
+        
+        /// <summary>
+        /// Handle keeping the Zoom Factor the same for all preview instances
+        /// Without this 
+        /// </summary>
+        private void CaptureZoomFactor()
+        {
+            if (WebBrowser.CoreWebView2 == null)
+            {
+                throw new InvalidOperationException("Please call CaptureZoomFactor after WebView has been initialized");
+            }
+            
+            if (!TrackZoomFactor)
+                return;
+            
+            WebBrowser.ZoomFactorChanged += (s, e) =>
+            {
+                if (!CaptureZoom)
+                {
+                    WebBrowser.ZoomFactor = ZoomLevel;
+                }
+                else
+                {
+                    ZoomLevel = WebBrowser.ZoomFactor;
+                }
+            };
+            WebBrowser.NavigationStarting += (object sender, CoreWebView2NavigationStartingEventArgs e) => CaptureZoom = false;
+            WebBrowser.CoreWebView2.DOMContentLoaded += (s, e) => CaptureZoom = true;
         }
 
         #endregion
