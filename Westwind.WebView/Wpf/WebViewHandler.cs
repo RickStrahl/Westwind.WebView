@@ -151,10 +151,24 @@ namespace Westwind.WebView.Wpf
             }
         }
 
+        /// <summary>
+        /// Determines whether the WebBrowser is loaded and initialized
+        /// </summary>
         public bool IsLoaded { get; set; }
 
-        protected bool IsInitialized { get; set; }
+        /// <summary>
+        /// Determines if the WebBrowser has been initialized
+        /// and is ready to navigate or update internal document content.
+        /// </summary>
+        public bool IsInitialized { get; set; }
 
+        /// <summary>
+        /// Determines whether the WebBrowser has initialized and is ready
+        /// to navigate or update internal document content.
+        /// </summary>
+        public Action InitializeComplete { get; set; }
+
+     
         #region Initialization
 
         /// <summary>
@@ -204,8 +218,11 @@ namespace Westwind.WebView.Wpf
                 );
                 await WebBrowser.EnsureCoreWebView2Async(env);
                 IsInitialized = true;
-            }
 
+                if(InitializeComplete != null)
+                    InitializeComplete();   
+            }
+            
             if (TrackZoomFactor)
             {
                 CaptureZoomFactor();
@@ -305,7 +322,7 @@ namespace Westwind.WebView.Wpf
         /// <param name="e"></param>
         protected virtual void OnDomContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
         {
-
+            IsLoaded = true;
         }
 
 
