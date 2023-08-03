@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net472; net60-windows;net70-windows</TargetFrameworks>
+		<TargetFrameworks>net472;net60-windows;net70-windows</TargetFrameworks>
 		<UseWPF>true</UseWPF>
 		<Version>0.1.4.2</Version>
 		<Authors>Rick Strahl</Authors>
@@ -45,7 +45,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1823.32" />
+	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1901.177" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	
