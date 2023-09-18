@@ -62,6 +62,7 @@ namespace WpfSample
                 // virutal host name for the folder
                 HostWebHostNameForFolder = "WebViewSample.basicinterop",
                 HostWebRootFolder = previewPath,
+                ShowDevTools = true,
 
                 // Initial page to load after loading is complete - ensures no invalid URL before host is assigned
                 InitialUrl = url
@@ -78,6 +79,17 @@ namespace WpfSample
                 Top = Owner.Top + 65;
                 Left = Owner.Left + 60;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ButtonUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            this.WebViewHandler.JsInterop.UpdatePerson(Model.Person);
+
         }
     }
 
@@ -270,25 +282,36 @@ namespace WpfSample
 
     #region WebView Handler
 
-    public class BasicInteropWebviewHandler : EmojiWebViewHandler
+    public class BasicInteropWebviewHandler : WebViewHandler<BasicInteropWebViewInterop>
     {
         public BasicInteropWebviewHandler(WebView2 webViewBrowser, string webViewEnvironmentFolder = null,
             object dotnetCallbackObject = null) :
             base(webViewBrowser, webViewEnvironmentFolder, dotnetCallbackObject)
         {
-            JsInterop = new EmojiWebViewInterop(webViewBrowser);
+            JsInterop = new BasicInteropWebViewInterop(webViewBrowser);
             HostObject = JsInterop;
         }
 
-   
     }
 
 
     public class BasicInteropWebViewInterop : BaseJavaScriptInterop
     {
-        public BasicInteropWebViewInterop(WebView2 webView) : base(webView, "window.page")
+
+        /// <summary>
+        /// Must implement this constructor, so this type can be constructed
+        /// </summary>
+        /// <param name="webView"></param>
+        /// <param name="baseInvocationTarget"></param>
+        public BasicInteropWebViewInterop(WebView2 webView, string baseInvocationTarget="window.page") : base(webView, baseInvocationTarget)
         {
 
+        }
+
+
+        public async Task UpdatePerson(Person person)
+        {
+            await Invoke("updatePerson", person);
         }
 
     }

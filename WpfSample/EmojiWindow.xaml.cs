@@ -96,6 +96,7 @@ namespace WpfSample
                 // virutal host name for the folder
                 HostWebHostNameForFolder = "markdownmonster.emoji",
                 HostWebRootFolder = previewPath,
+                ShowDevTools = false,  // show dev tools on startup
 
                 // Initial page to load after loading is complete - ensures no invalid URL before host is assigned
                 InitialUrl = url
@@ -186,18 +187,16 @@ namespace WpfSample
     /// from the main part of your form. You can pass in relevant data, or
     /// your model, or form here if necessary to get access to your app state.
     /// </summary>
-    public class EmojiWebViewHandler : WebViewHandler
+    public class EmojiWebViewHandler : WebViewHandler<EmojiWebViewInterop>
     {
         public string InitialSearchText { get; set;  }
-
-
-        public new EmojiWebViewInterop JsInterop { get; set; }
+        
 
         public EmojiWebViewHandler(WebView2 webViewBrowser, string webViewEnvironmentFolder = null,
             object dotnetCallbackObject = null) :
             base(webViewBrowser, webViewEnvironmentFolder, dotnetCallbackObject)
         {
-            JsInterop = new EmojiWebViewInterop(webViewBrowser);
+            //JsInterop = new EmojiWebViewInterop(webViewBrowser);
             HostObject = JsInterop;
         }
 
@@ -227,12 +226,16 @@ namespace WpfSample
     /// </summary>
     public class EmojiWebViewInterop : BaseJavaScriptInterop
     {
-        public EmojiWebViewInterop(WebView2 webView) : base(webView, "window.page")
+        /// <summary>
+        /// must implement this constructor!
+        /// </summary>
+        /// <param name="webView"></param>
+        /// <param name="baseInvocationTarget"></param>
+        public EmojiWebViewInterop(WebView2 webView, string baseInvocationTarget = "window.page" ) : base(webView, baseInvocationTarget)
         {
 
         }
-        
-
+    
         
         /// <summary>
         /// All calls into JS code are async!
@@ -252,7 +255,7 @@ namespace WpfSample
         /// <param name="emojiValue"></param>
         public void EmojiUpdated(string emojiValue)
         {
-            var window = this.WebBrowser.TryFindParent<Window>() as EmojiWindow;
+            var window = WebBrowser.TryFindParent<Window>() as EmojiWindow;
             window.SelectEmoji(emojiValue);
         }
 

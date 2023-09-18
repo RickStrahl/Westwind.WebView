@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfSample"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"       
+        xmlns:fa6="http://schemas.fontawesome.com/icons/fonts"
         mc:Ignorable="d"
         Icon="./assets/MarkdownMonster_Icon_256.png"
         TitleCharacterCasing="Normal"
@@ -18,7 +18,7 @@
             <Button Name="btnSimple" Height="35" FontSize="12" Margin="0 12"
                     Click="BtnSimple_OnClick">
                 <StackPanel Orientation="Horizontal">
-                    <fa:FontAwesome FontSize="17"  Icon="CheckCircle" Foreground="Green" Margin="0 0 10 0"/>
+                    <fa6:FontAwesome FontSize="17"  Icon="Solid_CircleCheck" Foreground="Green" Margin="0 0 10 0"/>
                     <TextBlock>
                         Basic Interop Examples
                     </TextBlock>
@@ -27,7 +27,7 @@
 
             <Button Name="btnEmoji" Click="BtnEmoji_OnClick" Height="35" FontSize="12">
                 <StackPanel Orientation="Horizontal">
-                    <fa:FontAwesome FontSize="17"  Name="StatusIcon" Icon="SmileOutline" Foreground="Goldenrod" Margin="0 0 10 0"/>
+                    <fa6:FontAwesome FontSize="17"  Name="StatusIcon" Icon="Regular_FaceSmile" Foreground="Goldenrod" Margin="0 0 10 0"/>
                     <TextBlock>
                         Emoji Picker Example
                     </TextBlock>

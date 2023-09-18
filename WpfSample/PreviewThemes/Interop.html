@@ -21,14 +21,19 @@
             <h1>Hello World</h1>
 
             <div class="address">
-                <small><i>address:</i></small>
-                <span>{{ Person.Firstname}}</span> {{Person.Lastname}}                
-                <strong>{{ Person.Company}}</strong>                    
-                {{ Person.Address.City}}
+                
+                <div style="font-size: 0.725em"><i>address:</i></div>
+                
+                <div>{{ person.firstname}} {{person.lastname}}</div>       
+                <div>{{ person.company}}</div>  
+                <div style="margin-top: 0.3em; font-size: 0.8em">
+                    <div>{{ person.address.street }}</div>
+                    <div> {{ person.address.city}}</div>
+                </div>
              </div>
         
              <pre>
-             {{ Person}}
+             {{ person}}
             </pre>
         </div>
         

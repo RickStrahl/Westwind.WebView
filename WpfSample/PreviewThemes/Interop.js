@@ -2,20 +2,21 @@ import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.esm.browser.js
 
 window.page = {
     person: {
-        Firstname: "Rick",
-        Lastname: "Strahl",
-        Company: "West Wind",
-        Email: "",
-        Address: {
-            Street: "",
-            City: "Paia, Hawaii",
-            State: "",
-            Zip: "",
-            Country: ""
-        }
+        firstname: "Rick",
+        lastname: "Strahl",
+        company: "West Wind",
+        email: "",
+        address: {
+            street: "111 Blue Skies Blvd.",
+            city: "Paia, Hawaii",
+            state: "",
+            zip: "",
+            country: ""
+        }        
     },
-    updatePerson(person) {
+    updatePerson(person) {        
         Object.assign(window.page.person, person);
+        console.log(person, window.page.person);               
     },
     // .NET calls this to explicitly retrieve the value
     getPerson() {
@@ -30,7 +31,7 @@ window.Initialize = function() {
     vueApp = new Vue({
         el: '#app',
         data: function () {        
-            var model =  { Person: window.page.person };
+            var model = { person: window.page.person };            
             return model;
         },
     });
