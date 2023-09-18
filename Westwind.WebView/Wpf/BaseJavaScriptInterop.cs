@@ -24,7 +24,7 @@ namespace Westwind.WebView.Wpf
     /// and then implement wrapper methods around each interop call
     /// you make into the JavaScript document rather than making the
     /// interop calls in your application code.
-    ///
+    /// 
     /// Operations are applied to the `BaseInvocationTarget` which is
     /// the base object that operations are run on. This can be the
     /// `window.` or any globally accessibly object ie. `window.textEditor.`.
@@ -34,6 +34,12 @@ namespace Westwind.WebView.Wpf
     ///
     /// Parameterize helps with encoding parameters when calling methods
     /// and turning them into string parseable values using JSON.
+    ///
+    /// *** IMPORTANT ***
+    /// When subclassing make sure you create the class with
+    /// ***the same constructor signature as this class***
+    /// and preferrably pre-set the `baseInvocationTarget` parameter
+    /// (`window` or `window.someObject`)   
     /// </summary>
     public class BaseJavaScriptInterop
     {
@@ -71,7 +77,7 @@ namespace Westwind.WebView.Wpf
             WebBrowser = webBrowser;
             if (string.IsNullOrEmpty(baseInvocationTarget))
                 baseInvocationTarget = "window.";
-            if (!baseInvocationTarget.EndsWith("."))
+            if (!baseInvocationTarget.TrimEnd().EndsWith("."))
                 baseInvocationTarget += ".";
 
             BaseInvocationTargetString = baseInvocationTarget;

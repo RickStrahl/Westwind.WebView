@@ -16,7 +16,8 @@ namespace Westwind.WebView.Wpf
     /// Generic WebViewHandler implementation that uses the BaseJavaScriptInterop object.
     /// Use this version if you don't need to customize Interop
     /// </summary>
-    public class WebViewHandler : WebViewHandler<BaseJavaScriptInterop>
+    public class WebViewHandler : WebViewHandler<BaseJavaScriptInterop>        
+        
     {
         /// <summary>
         /// Ctor 
@@ -192,7 +193,7 @@ namespace Westwind.WebView.Wpf
             //            WebView initialization conflicts if multiple
             //            WebView controls are used
             // _ = WebBrowser.Dispatcher.InvokeAsync( async () =>  await InitializeAsync());   // don't use!
-            WebBrowser.Dispatcher.Invoke(  ()=>  InitializeAsync().FireAndForget() );
+            WebBrowser.Dispatcher.Invoke(  ()=>  InitializeAsync().FireAndForget(), DispatcherPriority.Background );
         }
 
         /// <summary>
@@ -270,9 +271,16 @@ namespace Westwind.WebView.Wpf
         ///            Base implementation (no optional parameters.
         /// </summary>
         /// <returns></returns>
-        private TJsInterop CreateJsInteropInstance()
-        {
-            return Activator.CreateInstance(typeof(TJsInterop), new object[] { WebBrowser, ClientBaseObjectName + "." }) as TJsInterop;
+        protected TJsInterop CreateJsInteropInstance()
+        {            
+            try
+            {
+                return Activator.CreateInstance(typeof(TJsInterop), new object[] { WebBrowser, ClientBaseObjectName + "." }) as TJsInterop;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
 
         #endregion
