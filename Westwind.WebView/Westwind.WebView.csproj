@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net472;net60-windows;net70-windows</TargetFrameworks>
 		<UseWPF>true</UseWPF>
-		<Version>0.1.4.4</Version>
+		<Version>0.1.5</Version>
 		<Authors>Rick Strahl</Authors>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 		<Language>en-US</Language>
@@ -45,7 +45,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1938.49" />
+	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2045.28" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	
