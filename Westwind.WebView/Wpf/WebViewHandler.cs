@@ -193,7 +193,7 @@ namespace Westwind.WebView.Wpf
             //            WebView initialization conflicts if multiple
             //            WebView controls are used
             // _ = WebBrowser.Dispatcher.InvokeAsync( async () =>  await InitializeAsync());   // don't use!
-            WebBrowser.Dispatcher.Invoke(  ()=>  InitializeAsync().FireAndForget(), DispatcherPriority.Background );
+            _ = WebBrowser.Dispatcher.InvokeAsync(  ()=>  InitializeAsync().FireAndForget(), DispatcherPriority.Loaded );
         }
 
         /// <summary>

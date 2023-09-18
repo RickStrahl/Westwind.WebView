@@ -98,6 +98,9 @@ namespace WpfSample
                 HostWebRootFolder = previewPath,
                 ShowDevTools = false,  // show dev tools on startup
 
+                // if using a custom interop handler assign and configure here
+                JsInterop = new EmojiWebViewInterop(WebBrowser),
+
                 // Initial page to load after loading is complete - ensures no invalid URL before host is assigned
                 InitialUrl = url
             };

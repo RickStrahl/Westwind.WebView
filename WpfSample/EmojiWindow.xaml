@@ -36,6 +36,7 @@
                  Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                  BorderThickness="0.3" Opacity="0.70" FontSize="15" 
                  Margin="0 4 5 0"
+                 controls:TextBoxHelper.Watermark="Lookup Emoji by name"
                  KeyUp="TextSearchText_Keyup"
                  KeyDown="TextSearchText_Keydown">
             </TextBox>

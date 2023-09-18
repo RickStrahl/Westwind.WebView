@@ -62,7 +62,10 @@ namespace WpfSample
                 // virutal host name for the folder
                 HostWebHostNameForFolder = "WebViewSample.basicinterop",
                 HostWebRootFolder = previewPath,
-                ShowDevTools = true,
+                ShowDevTools = true, // show dev tools on startup
+
+                // if using a custom interop handler assign and configure here                
+                JsInterop = new BasicInteropWebViewInterop(WebBrowser),
 
                 // Initial page to load after loading is complete - ensures no invalid URL before host is assigned
                 InitialUrl = url
