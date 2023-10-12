@@ -214,12 +214,18 @@ namespace Westwind.WebView.Wpf
 
             if (!IsInitialized)  // Ensure this doesn't run more than once
             {
-                // must create a data folder if running out of a secured folder that can't write like Program Files
-                var env = await CoreWebView2Environment.CreateAsync(
-                    userDataFolder: WebViewEnvironmentFolder
-                );
-                await WebBrowser.EnsureCoreWebView2Async(env);
-                IsInitialized = true;
+                try
+                {
+                    // must create a data folder if running out of a secured folder that can't write like Program Files
+                    var env = await CoreWebView2Environment.CreateAsync(
+                        userDataFolder: WebViewEnvironmentFolder
+                    );
+                    await WebBrowser.EnsureCoreWebView2Async(env);
+                    IsInitialized = true;
+                } catch (Exception ex)
+                {
+                    throw new WebViewInitializationException($"WebView EnsureCoreWebView2AsyncCall failed.\nFolder: {WebViewEnvironmentFolder}", ex);
+                }
 
                 if(InitializeComplete != null)
                     InitializeComplete();   
