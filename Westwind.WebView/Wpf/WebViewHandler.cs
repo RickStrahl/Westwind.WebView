@@ -193,7 +193,8 @@ namespace Westwind.WebView.Wpf
             //            WebView initialization conflicts if multiple
             //            WebView controls are used
             // _ = WebBrowser.Dispatcher.InvokeAsync( async () =>  await InitializeAsync());   // don't use!
-            _ = WebBrowser.Dispatcher.InvokeAsync(  ()=>  InitializeAsync().FireAndForget(), DispatcherPriority.Loaded );
+            // WebBrowser.Dispatcher.Invoke(  ()=>  InitializeAsync().FireAndForget(), DispatcherPriority.Loaded );
+            _ = WebBrowser.Dispatcher.InvokeAsync(() => InitializeAsync().FireAndForget(), DispatcherPriority.Loaded);
         }
 
         /// <summary>
@@ -275,9 +276,10 @@ namespace Westwind.WebView.Wpf
         {            
             try
             {
+                // make sure the type constructor supports 2 parameters
                 return Activator.CreateInstance(typeof(TJsInterop), new object[] { WebBrowser, ClientBaseObjectName + "." }) as TJsInterop;
             }
-            catch(Exception ex)
+            catch
             {
                 return null;
             }

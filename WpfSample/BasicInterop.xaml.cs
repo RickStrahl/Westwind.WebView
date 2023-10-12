@@ -89,9 +89,9 @@ namespace WpfSample
 
         }
 
-        private void ButtonUpdate_Click(object sender, RoutedEventArgs e)
+        private async void ButtonUpdate_Click(object sender, RoutedEventArgs e)
         {
-            this.WebViewHandler.JsInterop.UpdatePerson(Model.Person);
+            await WebViewHandler.JsInterop.UpdatePerson(Model.Person);
 
         }
     }
