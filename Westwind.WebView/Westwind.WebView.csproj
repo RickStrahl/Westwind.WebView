@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net472;net60-windows;net70-windows</TargetFrameworks>
 		<UseWPF>true</UseWPF>
-		<Version>0.1.5</Version>
+		<Version>0.1.6</Version>
 		<Authors>Rick Strahl</Authors>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 		<Language>en-US</Language>
