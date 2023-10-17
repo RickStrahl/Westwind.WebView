@@ -2,8 +2,9 @@
 	<PropertyGroup>
 		<TargetFrameworks>net472;net60-windows;net70-windows</TargetFrameworks>
 		<UseWPF>true</UseWPF>
-		<Version>0.1.6</Version>
+		<Version>0.1.7</Version>
 		<Authors>Rick Strahl</Authors>
+		<Nullable>disable</Nullable>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 		<Language>en-US</Language>
 		<AssemblyName>Westwind.WebView</AssemblyName>
