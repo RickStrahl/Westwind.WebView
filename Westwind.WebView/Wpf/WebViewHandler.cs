@@ -56,6 +56,18 @@ namespace Westwind.WebView.Wpf
 
 
         /// <summary>
+        /// Optionally you can pass in an already created WebView Environment.
+        /// IMPORTANT: You must set this value in the CTOR call
+        /// ie. `new WebViewEnvironment&lt;T&gt;(...) { WebViewEnvironment = env}`
+        /// 
+        /// If an environment is passed in it overrides the `WebViewEnvironmentFolder`.
+        /// 
+        /// This setting is useful as it allows you to share the same environment
+        /// instance across multiple WebView instances.        
+        /// </summary>
+        public CoreWebView2Environment WebViewEnvironment { get; set; }
+
+        /// <summary>
         /// Object that can be used to access JavaScript operations on the
         /// Preview window. Runs global functions in the document using CallMethod()
         /// </summary>
@@ -192,9 +204,9 @@ namespace Westwind.WebView.Wpf
             // IMPORTANT: Don't use InvokeAsync() as it will cause
             //            WebView initialization conflicts if multiple
             //            WebView controls are used
-            // _ = WebBrowser.Dispatcher.InvokeAsync( async () =>  await InitializeAsync());   // don't use!
+            // _ = WebBrowser.Dispatcher.InvokeAsync( async () =>  InitializeAsync().FireAndForget);   // don't use!
             // WebBrowser.Dispatcher.Invoke(  ()=>  InitializeAsync().FireAndForget(), DispatcherPriority.Loaded );
-            _ = WebBrowser.Dispatcher.InvokeAsync(() => InitializeAsync().FireAndForget(), DispatcherPriority.Loaded);
+            WebBrowser.Dispatcher.Invoke(() => InitializeAsync().FireAndForget(), DispatcherPriority.Loaded);
         }
 
         /// <summary>
@@ -207,25 +219,30 @@ namespace Westwind.WebView.Wpf
             if (JsInterop == null)
                 JsInterop = CreateJsInteropInstance();
 
-            if (string.IsNullOrEmpty(WebViewEnvironmentFolder))
-            {
-                WebViewEnvironmentFolder = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "_WebView");
-            }
-
             if (!IsInitialized)  // Ensure this doesn't run more than once
             {
-                try
-                {
-                    // must create a data folder if running out of a secured folder that can't write like Program Files
-                    var env = await CoreWebView2Environment.CreateAsync(
-                        userDataFolder: WebViewEnvironmentFolder
-                    );
-                    await WebBrowser.EnsureCoreWebView2Async(env);
-                    IsInitialized = true;
-                } catch (Exception ex)
-                {
-                    throw new WebViewInitializationException($"WebView EnsureCoreWebView2AsyncCall failed.\nFolder: {WebViewEnvironmentFolder}", ex);
-                }
+                await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser);
+
+                //if (string.IsNullOrEmpty(WebViewEnvironmentFolder))
+                //{
+                //    WebViewEnvironmentFolder = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "_WebView");
+                //}
+
+                //try
+                //{
+                //    if (WebViewEnvironment == null)
+                //    {
+                //        // must create a data folder if running out of a secured folder that can't write like Program Files
+                //        WebViewEnvironment = await CoreWebView2Environment.CreateAsync(
+                //            userDataFolder: WebViewEnvironmentFolder
+                //        );
+                //    }
+                //    await WebBrowser.EnsureCoreWebView2Async(WebViewEnvironment);
+                //    IsInitialized = true;
+                //} catch (Exception ex)
+                //{
+                //    throw new WebViewInitializationException($"WebView EnsureCoreWebView2AsyncCall failed.\nFolder: {WebViewEnvironmentFolder}", ex);
+                //}
 
                 if(InitializeComplete != null)
                     InitializeComplete();   
