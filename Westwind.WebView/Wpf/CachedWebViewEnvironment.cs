@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Web.WebView2.Wpf;
 using System.Reflection;
+using System.Threading;
 
 namespace Westwind.WebView.Wpf
 {
@@ -47,6 +48,8 @@ namespace Westwind.WebView.Wpf
         /// Like the folder we recommend you set this early in your application startup.
         /// </summary>
         public CoreWebView2EnvironmentOptions EnvironmentOptions { get; set; }
+        private static SemaphoreSlim _EnvironmentLoadLock = new SemaphoreSlim(1, 1);
+
 
         /// <summary>
         /// This method provides a single point of initialization for the WebView2 environment
@@ -69,19 +72,28 @@ namespace Westwind.WebView.Wpf
         {
             try
             {
-                if (environment == null)
-                    environment = Environment;
                 
                 if (environment == null)
+                    environment = Environment;
+
+                if (environment == null)
                 {
-                    if (string.IsNullOrEmpty(Current.EnvironmentFolderName))
-                        Current.EnvironmentFolderName = Path.Combine(Path.GetTempPath(), 
-                            Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "_WebView");
+                    // lock
+                    await _EnvironmentLoadLock.WaitAsync();
 
-                    // must create a data folder if running out of a secured folder that can't write like Program Files
-                    environment = await CoreWebView2Environment.CreateAsync(userDataFolder: EnvironmentFolderName, options: EnvironmentOptions);
+                    if (environment == null)
+                    {
+                        if (string.IsNullOrEmpty(Current.EnvironmentFolderName))
+                            Current.EnvironmentFolderName = Path.Combine(Path.GetTempPath(),
+                                Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "_WebView");
 
-                    Environment = environment;
+                        // must create a data folder if running out of a secured folder that can't write like Program Files
+                        environment = await CoreWebView2Environment.CreateAsync(userDataFolder: EnvironmentFolderName, 
+                            options: EnvironmentOptions);
+                        Environment = environment;
+                    }
+                    
+                    _EnvironmentLoadLock.Release();
                 }
                 await webBrowser.EnsureCoreWebView2Async(environment);
             }
@@ -89,6 +101,7 @@ namespace Westwind.WebView.Wpf
             {
                 throw new WebViewInitializationException($"WebView EnsureCoreWebView2AsyncCall failed.\nFolder: {EnvironmentFolderName}", ex);
             }
+            
         }
 
     }
