@@ -9,6 +9,7 @@ The library provides:
 * A base behavior `WebViewHandler` class that wraps initialization and events  
 and provides built in Interop support
 * A JavaScript Interop class that simplifies calling into JavaScript from .NET
+* [A CachedWebView Environment to ensure consistent Environment reuse](https://weblog.west-wind.com/posts/2023/Oct/31/Caching-your-WebView-Environment-to-manage-multiple-WebView2-Controls)
 
 The WebView Handler is meant to be used when you need to do a lot of Interop between your .NET and JavaScript code. It ties together the WebView initialization, calling of methods in JavaScript and receiving callbacks back into .NET from JavaScript and hooking common events that you might have to deal with.
 
@@ -42,10 +43,11 @@ This objects is 'passed into JavaScript' and accessible as a host object in Java
 	```
 
 	A host object is just a .NET POCO object that contains methods to callback to either sync or async. You don't need to provide this if you don't have callbacks, or if you have only very few you can just use the JavaScriptInterop object to hold those methods and pass that.
+	
+	> Both the JavaScript and Dotnet objects are optional.  You can pass those in as null values and they won't be set or used for anything, but if that's the case you probably don't have much need for the `WebViewHandler` in the first place.
 
-
-> Both the JavaScript and Dotnet objects are optional.  You can pass those in as null values and they won't be set or used for anything, but if that's the case you probably don't have much need for the `WebViewHandler` in the first place.
-
+* **A Cached WebView Environment Class**  
+This class handles consistently initializing and re-using a single WebView environment inside of an application to avoid odd behaviors due to incompatible environment settings. Avoids among other things creating a default environment which may not work in some application if permissions don't allow access to create the default environment folder. The static methods of this class are used by default by the `WebViewHandler` to initialize the environment via `CoreWebView2Environment.CreateAsync()`.
 
 `WebViewHandler` is a behavior class that is attached to an existing instance of a WebView control, typically assigned in the constructor of the WebView host control.
 
@@ -196,3 +198,63 @@ void ConfigureEditor(RequestDocumentationItem documentation)
 This initial assignment triggers the initialization of the WebView and essentially starts an initial navigation with the assigned `InitialUrl` (or `Source` if not assigned). InitialUrl is a delayed navigation that ensures that the URL is not set until after the Host folder is mapped. This avoids failed navigations on initial display of the WebView.
 
 
+## CachedWebViewEnvironment Usage
+This class can be used to initialize the WebView Environment consistently. It's also used internally by `WebViewHandler` if no explicit environment is passed set in the CTOR.
+
+This class can be used independently of `WebViewHandler` if you manually instantiate your WebView environment.
+
+### Initialize Environment Folder and Options
+The first step is to initialize the WebView Environment folder location and set any options. This should be done **before the WebView is first instantiated** preferably during startup of the application.
+
+In WPF `OnStartup()` is a good place:
+
+```csharp
+protected override void OnStartup(StartupEventArgs e)
+{
+
+    // initialize single environment folder for all WebViews
+    CachedWebViewEnvironment.Current.EnvironmentFolderName = Path.Combine(
+       mmApp.Configuration.LocalAppDataFolder,
+       mmApp.Constants.WebViewEnvironmentFolderName);
+       
+    // Optionally - set any custom startup flags and options.
+    //             Typically this can be left at null
+    // CachedWebViewEnvironment.Current.EnvironmentOptions = null;
+
+    ...
+}
+```
+
+### Initializing the WebView Control
+Then, anywhere you need to use a WebView Environment, you can then initialize the WebView with this environment via the `InitializeWebViewEnvironment()` method, which either creates a new environment if it doesn't exist yet, or reuses the previously created one that is cached.
+
+This method calls `webBrowser.EnsureCoreWebView2Async()` to wait for the WebView to be initialized **and become UI active** (!) using the cached environment as its parameter.
+
+> Note the `EnsureCoreWebView2Async()` and by extension `InitializeWebViewEnvironment()` can take a long time to complete as it waits for UI activation before returning. 
+>
+> If the WebView is not visible (ie. inactive on another tab, or otherwise not visible) it will not return until it becomes active.
+
+In a usage scenario you can use `InitializeWebViewEnvironment()` like this during WebView initialization:
+
+```cs
+// Manual WebView Initialization
+protected async Task InitializeAsync()
+{
+    if (JsInterop == null)
+        JsInterop = CreateJsInteropInstance();
+    
+    if (!IsInitialized)  // Ensure this doesn't run more than once
+    {
+        // THIS
+        await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser);
+    
+        if(InitializeComplete != null)
+            InitializeComplete();   
+    }
+    ...          
+    // Code to set up Virtual Folder mapping
+    // initial navigation etc.
+}            
+```
+
+Rinse and repeat this process if you have multiple WebView controls in your application, or if you are repeatedly creating the same control.

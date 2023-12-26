@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net472;net60-windows;net70-windows</TargetFrameworks>
+		<TargetFrameworks>net472;net60-windows;net70-windows;net80-windows</TargetFrameworks>
 		<UseWPF>true</UseWPF>
-		<Version>0.1.9</Version>
+		<Version>0.1.10</Version>
 		<Authors>Rick Strahl</Authors>
 		<Nullable>disable</Nullable>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
@@ -26,7 +26,7 @@
 		<RepositoryType>Github</RepositoryType>
 		<Company>West Wind Technologies</Company>
 		<RepositoryUrl>https://github.com/RickStrahl/Westwind.WebView</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
+		<RepositoryType>git</RepositoryType>		
 	</PropertyGroup>
 	
 	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -34,10 +34,8 @@
 		<NoWarn>$(NoWarn);CS1591;CS1572;CS1573</NoWarn>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-
 		<PackageOutputPath>./nupkg</PackageOutputPath>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-
 		<DefineConstants>RELEASE</DefineConstants>
 	</PropertyGroup>
 	
@@ -46,7 +44,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2088.41" />
+	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	

@@ -223,27 +223,6 @@ namespace Westwind.WebView.Wpf
             {
                 await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser);
 
-                //if (string.IsNullOrEmpty(WebViewEnvironmentFolder))
-                //{
-                //    WebViewEnvironmentFolder = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "_WebView");
-                //}
-
-                //try
-                //{
-                //    if (WebViewEnvironment == null)
-                //    {
-                //        // must create a data folder if running out of a secured folder that can't write like Program Files
-                //        WebViewEnvironment = await CoreWebView2Environment.CreateAsync(
-                //            userDataFolder: WebViewEnvironmentFolder
-                //        );
-                //    }
-                //    await WebBrowser.EnsureCoreWebView2Async(WebViewEnvironment);
-                //    IsInitialized = true;
-                //} catch (Exception ex)
-                //{
-                //    throw new WebViewInitializationException($"WebView EnsureCoreWebView2AsyncCall failed.\nFolder: {WebViewEnvironmentFolder}", ex);
-                //}
-
                 if(InitializeComplete != null)
                     InitializeComplete();   
             }
