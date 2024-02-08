@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net472;net60-windows;net70-windows;net80-windows</TargetFrameworks>
 		<UseWPF>true</UseWPF>
-		<Version>0.1.10</Version>
+		<Version>0.1.11</Version>
 		<Authors>Rick Strahl</Authors>
 		<Nullable>disable</Nullable>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
@@ -22,7 +22,7 @@
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageLicense>LICENSE.MD</PackageLicense>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<Copyright>Rick Strahl, West Wind Technologies, 2023</Copyright>
+		<Copyright>Rick Strahl, West Wind Technologies, 2023-2024</Copyright>
 		<RepositoryType>Github</RepositoryType>
 		<Company>West Wind Technologies</Company>
 		<RepositoryUrl>https://github.com/RickStrahl/Westwind.WebView</RepositoryUrl>
@@ -40,11 +40,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-	  <Compile Remove="Utilities\JsonSerializationUtils.cs" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
+	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2151.40" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	
