@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net472;net60-windows;net70-windows;net80-windows</TargetFrameworks>
 		<UseWPF>true</UseWPF>
-		<Version>0.1.11</Version>
+		<Version>0.1.12</Version>
 		<Authors>Rick Strahl</Authors>
 		<Nullable>disable</Nullable>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
@@ -15,7 +15,7 @@
 		<Title>West Wind WebView Interop Helpers</Title>
 		<Description>A small helper library for the Microsoft.WebView control for WPF</Description>
 		<Summary>A small helper library that provide a base behavior class that wraps initialization and provides Interop functionality.</Summary>
-		<PackageCopyright>Rick Strahl, West Wind Technologies 2023</PackageCopyright>
+		<PackageCopyright>Rick Strahl, West Wind Technologies 2023-2024</PackageCopyright>
 		<PackageTags>WebView Westwind</PackageTags>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<PackageProjectUrl>http://github.com/rickstrahl/westwind.webview</PackageProjectUrl>
@@ -40,7 +40,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2151.40" />
+	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2277.86" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	

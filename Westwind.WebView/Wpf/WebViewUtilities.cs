@@ -56,7 +56,7 @@ namespace Westwind.WebView.Wpf
         {
             try
             {
-                var versionNo = CoreWebView2Environment.GetAvailableBrowserVersionString();
+                var versionNo = CoreWebView2Environment.GetAvailableBrowserVersionString(null);
 
                 // strip off 'canary' or 'stable' version
                 var at = versionNo.IndexOf(" ");
