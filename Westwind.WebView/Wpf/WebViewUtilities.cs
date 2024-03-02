@@ -79,6 +79,7 @@ namespace Westwind.WebView.Wpf
             return false;
         }
 
+
         /// <summary>
         /// Removes the applications local WebView Environment
         /// </summary>
@@ -100,6 +101,26 @@ namespace Westwind.WebView.Wpf
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Returns the WebView SDK
+        /// </summary>
+        /// <param name="returnSdk"></param>
+        /// <returns></returns>
+        public static string GetWebViewRuntimeVersion(bool returnSdk =  false)
+        {
+            try
+            {
+                if (!returnSdk)
+                 return CoreWebView2Environment.GetAvailableBrowserVersionString(null);
+                
+                return typeof(CoreWebView2Environment).Assembly.GetName().Version.ToString();
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
