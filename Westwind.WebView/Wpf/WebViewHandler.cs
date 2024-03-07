@@ -219,8 +219,13 @@ namespace Westwind.WebView.Wpf
             if (JsInterop == null)
                 JsInterop = CreateJsInteropInstance();
 
+            // IMPORTANT: The await within DOES NOT FIRE until the control becomes
+            //            visible. If on a hidden tab, or not visible the await
+            //            waits until the visibility changes.
             if (!IsInitialized)  // Ensure this doesn't run more than once
             {
+                // make sure we display a blank page until we are ready!
+                WebBrowser.Source = new Uri("about:blank");
                 await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser);
 
                 if(InitializeComplete != null)
@@ -260,7 +265,7 @@ namespace Westwind.WebView.Wpf
 
             if (!string.IsNullOrEmpty(InitialUrl))
             {
-                WebBrowser.Source = new Uri(InitialUrl);
+                Navigate(InitialUrl);
             }
         }
 

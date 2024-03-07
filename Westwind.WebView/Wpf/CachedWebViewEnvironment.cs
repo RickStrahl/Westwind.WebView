@@ -48,6 +48,12 @@ namespace Westwind.WebView.Wpf
         /// Like the folder we recommend you set this early in your application startup.
         /// </summary>
         public CoreWebView2EnvironmentOptions EnvironmentOptions { get; set; }
+
+
+        /// <summary>
+        /// Ensure only one instance initializes the environment at a time to avoid
+        /// multiple environment versions.
+        /// </summary>
         private static SemaphoreSlim _EnvironmentLoadLock = new SemaphoreSlim(1, 1);
 
 
