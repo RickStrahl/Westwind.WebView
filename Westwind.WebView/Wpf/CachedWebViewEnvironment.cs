@@ -52,7 +52,8 @@ namespace Westwind.WebView.Wpf
 
         /// <summary>
         /// Ensure only one instance initializes the environment at a time to avoid
-        /// multiple environment versions.
+        /// multiple environment versions. Only applies to environment load, not waiting
+        /// for the initialization to complete which can take a long time.
         /// </summary>
         private static SemaphoreSlim _EnvironmentLoadLock = new SemaphoreSlim(1, 1);
 

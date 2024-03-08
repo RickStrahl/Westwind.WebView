@@ -224,8 +224,6 @@ namespace Westwind.WebView.Wpf
             //            waits until the visibility changes.
             if (!IsInitialized)  // Ensure this doesn't run more than once
             {
-                // make sure we display a blank page until we are ready!
-                WebBrowser.Source = new Uri("about:blank");
                 await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser);
 
                 if(InitializeComplete != null)
