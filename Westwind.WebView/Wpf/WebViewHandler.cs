@@ -176,12 +176,18 @@ namespace Westwind.WebView.Wpf
         public bool IsInitialized { get; set; }
 
         /// <summary>
+        /// Task completion source that can be awaited for initialization to complete
+        /// Note: this applies to visibility so this may wait for quite some time        
+        /// </summary>
+        public TaskCompletionSource<bool> IsInitializedTaskCompletionSource { get; set; } = new TaskCompletionSource<bool>();
+
+        /// <summary>
         /// Determines whether the WebBrowser has initialized and is ready
         /// to navigate or update internal document content.
         /// </summary>
-        public Action InitializeComplete { get; set; }
-
-     
+        public Action InitializeComplete { get; set; } 
+        
+        
         #region Initialization
 
         /// <summary>
@@ -225,6 +231,9 @@ namespace Westwind.WebView.Wpf
             if (!IsInitialized)  // Ensure this doesn't run more than once
             {
                 await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser);
+
+                IsInitialized = true;
+                IsInitializedTaskCompletionSource.SetResult(true);
 
                 if(InitializeComplete != null)
                     InitializeComplete();   
@@ -363,7 +372,31 @@ namespace Westwind.WebView.Wpf
         #endregion
 
         #region Navigation
+        public virtual async Task NavigateAsync(Uri uri, bool forceRefresh = false)
+        {
+            if (uri == null) return;
 
+            // ensure that the WebView is initialized and wait
+            // this can be if the WebView is hidden initially for example
+            await IsInitializedTaskCompletionSource.Task;
+
+            IsLoaded = false;
+
+            if (forceRefresh)
+            {
+                WebBrowser.Source = new Uri("about:blank"); //  can't be null, has to be a uri
+                WebBrowser.Dispatcher.Invoke(() => WebBrowser.Source = uri);
+                return;
+            }
+
+            WebBrowser.Source = uri;
+        }
+
+        public virtual Task NavigateAsync(string url, bool forceRefresh = false)
+        {
+            if (string.IsNullOrEmpty(url)) return Task.CompletedTask;
+            return NavigateAsync(new Uri(url), forceRefresh);   
+        }
 
         /// <summary>
         /// Navigates the browser to a URL or file
@@ -372,17 +405,7 @@ namespace Westwind.WebView.Wpf
         public virtual void Navigate(string url, bool forceRefresh = false)
         {
             if (string.IsNullOrEmpty(url)) return;
-
-            IsLoaded = false;
-
-            if (forceRefresh)
-            {
-                WebBrowser.Source = new Uri("about:blank"); //  can't be null, has to be a uri
-                WebBrowser.Dispatcher.Invoke(() => WebBrowser.Source = new Uri(url));
-                return;
-            }
-
-            WebBrowser.Source = new Uri(url);
+            WebBrowser.Dispatcher.InvokeAsync(() => NavigateAsync(url, forceRefresh).FireAndForget());            
         }
 
         /// <summary>
@@ -392,15 +415,7 @@ namespace Westwind.WebView.Wpf
         public virtual void Navigate(Uri uri, bool forceRefresh = false)
         {
             if (uri == null) return;
-
-            IsLoaded = false;
-            if (forceRefresh)
-            {
-                WebBrowser.Source = new Uri("about:blank");  //  can't be null, has to be a uri
-                WebBrowser.Dispatcher.Invoke(() => WebBrowser.Source = uri);
-                return;
-            }
-            WebBrowser.Source = uri;
+            WebBrowser.Dispatcher.InvokeAsync(() => NavigateAsync(uri, forceRefresh).FireAndForget());           
         }
 
 
@@ -410,6 +425,8 @@ namespace Westwind.WebView.Wpf
         /// <param name="noCache"></param>
         public void Refresh(bool noCache = false)
         {
+            if (!IsInitialized) return;
+            
             IsLoaded = false;
             if (noCache)
             {
