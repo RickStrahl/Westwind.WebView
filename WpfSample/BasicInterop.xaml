@@ -52,7 +52,8 @@
 
         </StackPanel>
 
-        <wpf:WebView2 Grid.Row="1" Name="WebBrowser" DefaultBackgroundColor="Transparent"   />
+        <wpf:WebView2 Grid.Row="1" Name="WebBrowser" 
+                      DefaultBackgroundColor="Transparent"   />
 
         <StatusBar  Grid.Row="2" Height="28"  VerticalAlignment="Bottom" HorizontalAlignment="Stretch">
             <StatusBar.ItemsPanel>

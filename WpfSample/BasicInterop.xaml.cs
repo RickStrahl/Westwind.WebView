@@ -49,7 +49,7 @@ namespace WpfSample
             }
 #else
             // Production uses the runtime location which only updates on compile (unless you change in place)
-            var previewPath = System.IO.Path.Combine(App.InitialStartDirectory,"PreviewThemes");   // production folder
+            var previewPath = System.IO.Path.Combine(App.InitialStartDirectory,"PreviewThemes");   // production folder            
 #endif
 
             // page to load in WebView
