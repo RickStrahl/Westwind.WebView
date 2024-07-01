@@ -2,11 +2,13 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
+using Newtonsoft.Json;
 using Westwind.WebView.Utilities;
 
 namespace Westwind.WebView.Wpf
@@ -396,6 +398,52 @@ namespace Westwind.WebView.Wpf
         {
             if (string.IsNullOrEmpty(url)) return Task.CompletedTask;
             return NavigateAsync(new Uri(url), forceRefresh);   
+        }
+
+        /// <summary>
+        /// This navigates to a string of HTML content. Unlike the native function
+        /// this version supports large strings larger than 2000 bytes, but it
+        /// has overhead as it assigns via an interop command.
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        public virtual async Task NavigateToString(string html)
+        {   
+            WebBrowser.Source = new Uri("about:blank");
+
+            string encodedHtml = JsonConvert.SerializeObject(html);
+            string script = "window.document.write(" + encodedHtml + ")";
+
+            await Task.Yield();
+            await WebBrowser.ExecuteScriptAsync(script);            
+        }
+
+        /// <summary>
+        /// This navigates to a string of HTML content from a stream. Unlike the native function
+        /// this version supports large strings larger than 2000 bytes, but it
+        /// has overhead as it assigns via an interop command.
+        /// </summary>
+        /// <param name="htmlStream">Stream of HTML document</param>
+        /// <param name="encoding">Encoding of the Html stream. Defaults to Utf8</param>
+        /// <returns></returns>
+        public virtual async Task NavigateFromHtmlStream(Stream htmlStream, Encoding encoding = null)
+        {
+            if (encoding == null)
+                encoding = Encoding.UTF8;
+
+            WebBrowser.Source = new Uri("about:blank");
+
+            if (htmlStream == null || htmlStream.Length < 1)
+                return;
+            
+            var html = htmlStream.AsString(encoding);
+            if (string.IsNullOrEmpty(html)) 
+                return;
+
+            if (html.Length < 2000)
+                WebBrowser.NavigateToString(html);
+            else
+                await NavigateToString(html); 
         }
 
         /// <summary>
