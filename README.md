@@ -1,5 +1,7 @@
 # Westwind.WebView Interop Helpers
 
+<a href="https://www.nuget.org/packages/Westwind.WebView/">![](https://img.shields.io/nuget/v/Westwind.WebView.svg)</a> <a href="https://www.nuget.org/packages/Westwind.WebView/">![](https://img.shields.io/nuget/dt/Westwind.WebView.svg)</a>
+
 A .NET support library for the `Microsoft.Web.WebView2` control to aid with common operations and .NET / JavaScript interop.
 
 > This is an internal library and I'm opening this up for reference in various posts and support tools. It's not well documented at this time. 
