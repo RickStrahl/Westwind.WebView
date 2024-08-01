@@ -37,6 +37,16 @@
                      Text="{Binding EmojiSearchText}"
                      mah:TextBoxHelper.Watermark="search for emoji" />
 
+            <Separator Margin="0 20" />
+            
+            <Button Name="btnTest" Click="BtnTest_OnClick" Height="35" FontSize="12">
+                <StackPanel Orientation="Horizontal">
+                    <fa6:FontAwesome FontSize="17"  Icon="Solid_Gear" Foreground="SteelBlue" Margin="0 0 10 0"/>
+                    <TextBlock>
+                        String Navigation Issues
+                    </TextBlock>
+                </StackPanel>
+            </Button>
         </StackPanel>
     </Grid>
 </mah:MetroWindow>

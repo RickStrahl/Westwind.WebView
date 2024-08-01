@@ -106,17 +106,18 @@ namespace WpfSample
             };
 
             Loaded += EmojiWindow_Loaded;
+
+           
         }
 
-        private void EmojiWindow_Loaded(object sender, RoutedEventArgs e)
+        private async void EmojiWindow_Loaded(object sender, RoutedEventArgs e)
         {
-
             if (Owner != null)
             {
                 Top = Owner.Top + 45;
                 Left = Owner.Left + 30;
             }
-            TextSearchText.Focus();
+            TextSearchText.Focus();       
         }
 
         private void EmojiWindow_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)

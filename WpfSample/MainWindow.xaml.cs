@@ -46,6 +46,11 @@ namespace WpfSample
         }
 
 
+        private void BtnTest_OnClick(object sender, RoutedEventArgs e)
+        {
+            var form = new StringNavigationIssues();
+            form.Show();
+        }
     }
 
 
