@@ -167,11 +167,6 @@ namespace Westwind.WebView.Wpf
         }
 
         /// <summary>
-        /// Determines whether the WebBrowser is loaded and initialized
-        /// </summary>
-        public bool IsLoaded { get; set; }
-
-        /// <summary>
         /// Determines if the WebBrowser has been initialized
         /// and is ready to navigate or update internal document content.
         /// </summary>
@@ -181,8 +176,43 @@ namespace Westwind.WebView.Wpf
         /// Task completion source that can be awaited for initialization to complete
         /// Note: this applies to visibility so this may wait for quite some time        
         /// </summary>
-        public TaskCompletionSource<bool> IsInitializedTaskCompletionSource { get; set; } = new TaskCompletionSource<bool>();
+        public TaskCompletionSource IsInitializedTaskCompletionSource { get; set; } = new TaskCompletionSource();
 
+
+        /// <summary>
+        /// Determines whether the WebBrowser is loaded and initialized
+        /// </summary>
+        public bool IsLoaded { get; set; }
+
+        /// <summary>
+        /// Task completion source that can be awaited for document loading to complete        
+        /// </summary>
+        public TaskCompletionSource IsLoadedTaskCompletionSource { get; set; } = new TaskCompletionSource();
+
+        /// <summary>
+        /// Checks to see if the document has been loaded
+        /// </summary>
+        /// <param name="msTimeout">timeout to allow content to load in</param>
+        /// <returns>true if loaded in time, false if it fails to load in time</returns>
+        public async Task<bool> WaitForDocumentLoaded(int msTimeout = 5000){
+            if (IsLoaded)
+                return true;
+
+            if (IsLoadedTaskCompletionSource == null)
+                IsLoadedTaskCompletionSource = new TaskCompletionSource();
+
+            var task = IsLoadedTaskCompletionSource.Task;
+            if (task == null)
+                return false;
+
+            if (task.IsCompleted)
+                return true;
+
+            var timeoutTask = Task.Delay(msTimeout);
+            var completedTask = await Task.WhenAny(task, timeoutTask);
+            return completedTask == task;
+        }
+     
         /// <summary>
         /// Determines whether the WebBrowser has initialized and is ready
         /// to navigate or update internal document content.
@@ -201,7 +231,7 @@ namespace Westwind.WebView.Wpf
         /// <param name="webViewEnvironmentFolder">optional environment folder on disk - can be null</param>
         /// <param name="hostObject">optional .NET callback object - can be null exposes as .dotnet in JavaScript or override HostObjectName</param>
         public WebViewHandler(WebView2 webViewBrowser, string webViewEnvironmentFolder, object hostObject)
-        {
+        {            
             WebViewEnvironmentFolder = webViewEnvironmentFolder;
             HostObject = hostObject;
             WebBrowser = webViewBrowser;
@@ -235,7 +265,7 @@ namespace Westwind.WebView.Wpf
                 await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser);
 
                 IsInitialized = true;
-                IsInitializedTaskCompletionSource.SetResult(true);
+                IsInitializedTaskCompletionSource.SetResult();
 
                 if(InitializeComplete != null)
                     InitializeComplete();   
@@ -323,11 +353,15 @@ namespace Westwind.WebView.Wpf
         ///
         /// You can also stop navigation (as you would when you intercept with local app logic)
         /// or change the URL using the event args.
+        /// 
+        /// Make sure to call base class method when overriding to ensure loading flags are set.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e">event args that allow modifying navigation behavior</param>
         protected virtual  void OnNavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
         {
+            IsLoaded = false;
+            IsLoadedTaskCompletionSource = new TaskCompletionSource();                        
         }
 
         protected virtual void OnWebBrowserKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -343,12 +377,18 @@ namespace Westwind.WebView.Wpf
         /// <summary>
         /// Fired when DOM content has completed loading. Allows you access the document saefly after
         /// it has initially loaded.
+        /// 
+        /// Make sure to call base class method when overriding to ensure loading flags are set.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected virtual void OnDomContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected virtual async void OnDomContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            IsLoaded = true;
+            IsLoaded = true;            
+            if (IsLoadedTaskCompletionSource?.Task != null && !IsLoadedTaskCompletionSource.Task.IsCompleted)
+                IsLoadedTaskCompletionSource?.SetResult();
         }
 
 
@@ -408,7 +448,13 @@ namespace Westwind.WebView.Wpf
         /// <param name="html"></param>
         /// <returns></returns>
         public virtual async Task NavigateToString(string html)
-        {   
+        {
+            if (html.Length < 1_999_900)
+            {
+                WebBrowser.NavigateToString(html);
+                return;
+            }
+
             WebBrowser.Source = new Uri("about:blank");
 
             string encodedHtml = JsonConvert.SerializeObject(html);
@@ -440,7 +486,7 @@ namespace Westwind.WebView.Wpf
             if (string.IsNullOrEmpty(html)) 
                 return;
 
-            if (html.Length < 2000)
+            if (html.Length < 1_999_900)
                 WebBrowser.NavigateToString(html);
             else
                 await NavigateToString(html); 
@@ -554,4 +600,15 @@ namespace Westwind.WebView.Wpf
             WebBrowser?.Dispose();
         }
     }
+
+#if NETFRAMEWORK
+    public class TaskCompletionSource : TaskCompletionSource<bool>
+    {   
+        public void SetResult()
+        {
+            base.SetResult(true);
+        }
+    }
+#endif
+
 }
