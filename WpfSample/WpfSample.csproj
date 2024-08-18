@@ -17,16 +17,28 @@
   </ItemGroup>
 
   <ItemGroup>
-	  
     <!--<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />-->
     <PackageReference Include="FontAwesome6.Fonts" Version="2.5.1" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="Westwind.Utilities" Version="5.0.5" />
-    <!--<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1722.32" />-->
+	  
+	<!-- Library Package that references Micrsoft.WebView2.Wpf -->  
+	<PackageReference Include="Westwind.WebView" Version="0.1.20" />    
+
+	<!-- This was never required - required now or get errors-->  
+	<!--<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2651.64" />-->
+	  
+	<!--<ProjectReference Include="..\Westwind.WebView\Westwind.WebView.csproj" />-->
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Westwind.WebView\Westwind.WebView.csproj" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Web.WebView2.Wpf">
+      <HintPath>C:\Users\rstrahl\.nuget\packages\microsoft.web.webview2\1.0.2651.64\lib_manual\netcoreapp3.0\Microsoft.Web.WebView2.Wpf.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

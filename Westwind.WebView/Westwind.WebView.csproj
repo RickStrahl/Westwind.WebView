@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFrameworks>net472;net6.0-windows;net8.0-windows</TargetFrameworks>
 		<UseWPF>true</UseWPF>
-		<Version>0.1.18</Version>
+		<Version>0.1.20</Version>
 		<Authors>Rick Strahl</Authors>
 		<Nullable>disable</Nullable>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>

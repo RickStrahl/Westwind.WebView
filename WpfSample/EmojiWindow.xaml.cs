@@ -6,7 +6,6 @@ using System.Windows.Input;
 using MahApps.Metro.Controls;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using Westwind.WebView.Utilities;
 using Westwind.WebView.Wpf;
@@ -110,7 +109,7 @@ namespace WpfSample
            
         }
 
-        private async void EmojiWindow_Loaded(object sender, RoutedEventArgs e)
+        private void EmojiWindow_Loaded(object sender, RoutedEventArgs e)
         {
             if (Owner != null)
             {
@@ -204,7 +203,7 @@ namespace WpfSample
             HostObject = JsInterop;
         }
 
-        protected override async void OnDomContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
+        protected override async void OnDomContentLoaded(object sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs e)        
         {
             base.OnDomContentLoaded(sender,e);
 
