@@ -22,7 +22,7 @@
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
     <PackageReference Include="Westwind.Utilities" Version="5.0.5" />
 	  
-	<!-- Library Package that references Micrsoft.WebView2.Wpf -->  
+	<!-- Library Package that references Micrsoft.WebView2.Wpf    using old  Version="1.0.2592.51"  works -->  
 	<PackageReference Include="Westwind.WebView" Version="0.1.20" />    
 
 	<!-- This was never required - required now or get errors-->  
