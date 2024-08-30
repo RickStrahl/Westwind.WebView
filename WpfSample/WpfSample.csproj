@@ -23,23 +23,16 @@
     <PackageReference Include="Westwind.Utilities" Version="5.0.5" />
 	  
 	<!-- Library Package that references Micrsoft.WebView2.Wpf    using old  Version="1.0.2592.51"  works -->  
-	<PackageReference Include="Westwind.WebView" Version="0.1.20" />    
+	<!--<PackageReference Include="Westwind.WebView" Version="0.1.21" />-->    
 
 	<!-- This was never required - required now or get errors-->  
 	<!--<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2651.64" />-->
 	  
-	<!--<ProjectReference Include="..\Westwind.WebView\Westwind.WebView.csproj" />-->
+	<ProjectReference Include="..\Westwind.WebView\Westwind.WebView.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
 
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Microsoft.Web.WebView2.Wpf">
-      <HintPath>C:\Users\rstrahl\.nuget\packages\microsoft.web.webview2\1.0.2651.64\lib_manual\netcoreapp3.0\Microsoft.Web.WebView2.Wpf.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+ 
 
   <ItemGroup>
     <None Update="ExportedHtml.html">
