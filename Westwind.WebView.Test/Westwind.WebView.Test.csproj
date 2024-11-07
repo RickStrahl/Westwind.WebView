@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net8.0-windows;net472</TargetFrameworks>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="coverlet.collector" Version="6.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
+
+		<PackageReference Include="Westwind.Utilities" Version="4.0.20" />
+	</ItemGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' != 'net462'">
+		<DefineConstants>NETCORE;</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net462'">
+		<DefineConstants>NETFULL</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Westwind.WebView\Westwind.WebView.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="HtmlToPdf\HtmlSampleFile-SelfContained.html">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="HtmlToPdf\HtmlSampleFileLonger-SelfContained.html">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="HtmlToPdf\PdfSampleFile.pdf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>

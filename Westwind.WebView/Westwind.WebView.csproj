@@ -2,7 +2,9 @@
 	<PropertyGroup>
 		<TargetFrameworks>net472;net6.0-windows;net8.0-windows</TargetFrameworks>
 		<UseWPF>true</UseWPF>
-		<Version>0.1.24</Version>
+		<UseWindowsForms>true</UseWindowsForms>
+		<LangVersion>Latest</LangVersion>
+		<Version>0.1.30</Version>
 		<Authors>Rick Strahl</Authors>
 		<Nullable>disable</Nullable>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>

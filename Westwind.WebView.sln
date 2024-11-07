@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Westwind.WebView.Test", "Westwind.WebView.Test\Westwind.WebView.Test.csproj", "{868E3D99-0F22-4149-87E0-1857F4414772}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{191B469B-8FC8-4029-AB49-ACF0B348B2DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{191B469B-8FC8-4029-AB49-ACF0B348B2DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{191B469B-8FC8-4029-AB49-ACF0B348B2DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{868E3D99-0F22-4149-87E0-1857F4414772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{868E3D99-0F22-4149-87E0-1857F4414772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{868E3D99-0F22-4149-87E0-1857F4414772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{868E3D99-0F22-4149-87E0-1857F4414772}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
