@@ -6,6 +6,10 @@
 | Library        | Nuget Package          |
 |----------------|----------------|
 | Westwind.WebView | [![](https://img.shields.io/nuget/v/Westwind.WebView.svg)](https://www.nuget.org/packages/Westwind.WebView/) [![](https://img.shields.io/nuget/dt/Westwind.WebView.svg)](https://www.nuget.org/packages/Westwind.WebView/) |
+| ~~Westwind.WebView.HtmlToPdf (deprecated)~~ | [![](https://img.shields.io/nuget/v/Westwind.WebView.HtmlToPdf.svg)](https://www.nuget.org/packages/Westwind.WebView.HtmlToPdf/) [![](https://img.shields.io/nuget/dt/Westwind.WebView.HtmlToPdf.svg)](https://www.nuget.org/packages/Westwind.WebView.HtmlToPdf/) |
+
+> [!IMPORTANT]
+> The old `Westwind.WebView.HtmlToPdf` library has been deprecated and has been rolled into this `Westwind.WebView` library. All features and syntax carry over from the old version and the library can be used without changes except swapping out the NuGet package reference.
 
 
 This library provides a quick way to print Html to Pdf on Windows using the WebView control. You can generate Pdf from Html of a Url or file by using a few different mechanisms:
