@@ -56,7 +56,7 @@ This library only has a single dependency on the WebView control and provides ve
 You can install this NuGet package:
 
 ```ps
-dotnet add package westwind.webview.htmltopdf
+dotnet add package westwind.webview
 ```
 
 The library exposes 4 separate output methods:

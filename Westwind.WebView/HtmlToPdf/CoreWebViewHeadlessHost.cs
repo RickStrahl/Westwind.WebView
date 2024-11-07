@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Westwind.WebView.HtmlToPdf.Utilities;
 
 
@@ -421,7 +422,7 @@ public class DevToolsPrintToPdfSettings
     public double marginBottom { get; set; } = 0.4;
     public double marginLeft { get; set; } = 0.4;
     public double marginRight { get; set; } = 0.4;
-    public string pageRanges { get; set; } = "";
+    public string pageRanges { get; set; } = string.Empty;
 
     public bool displayHeaderFooter { get; set; } = true;
     public string headerTemplate { get; set; } = "<div style='font-size: 10px; width: 100%; text-align: center;'><span class='title'></span></div>";
@@ -432,30 +433,8 @@ public class DevToolsPrintToPdfSettings
 
     public string ToJson()
     {
-        // avoid using a serializer
-        return
-$$"""
-{      			
-    "landscape": {{landscape.ToJson()}},    
-    "printBackground": {{printBackground.ToJson()}},
-    "scale": {{scale.ToJson()}},
-    "paperWidth": {{paperWidth.ToJson()}},
-    "paperHeight": {{paperHeight.ToJson()}},
-    "marginTop": {{marginTop.ToJson()}},
-    "marginBottom": {{marginBottom.ToJson()}},
-    "marginLeft": {{marginLeft.ToJson()}},
-    "marginRight": {{marginRight.ToJson()}},
-    "pageRanges":  {{(pageRanges ?? string.Empty).ToJson()}},  
-    "headerTemplate": {{headerTemplate.ToJson()}},
-    "footerTemplate": {{footerTemplate.ToJson()}},
-    "displayHeaderFooter": {{displayHeaderFooter.ToJson()}},
-    "preferCSSPageSize": {{preferCSSPageSize.ToJson()}},
-    "generateDocumentOutline": {{generateDocumentOutline.ToJson()}}                 
-}			 
-"""
-                .Trim();
-            
-
+        pageRanges = pageRanges ?? string.Empty;
+        return JsonConvert.SerializeObject(this);
     }
 }
         

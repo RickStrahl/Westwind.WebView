@@ -122,7 +122,9 @@ namespace Westwind.WebView.HtmlToPdf
         /// This a shortcut for the HeaderTemplate that sets the top of the page header. For more control
         /// set the HeaderTemplate directly.
         /// </summary>
-        public string HeaderTitle { set
+        public string HeaderTitle
+        {
+            set
             {
                 if (string.IsNullOrEmpty(value))
                     HeaderTemplate = "";
