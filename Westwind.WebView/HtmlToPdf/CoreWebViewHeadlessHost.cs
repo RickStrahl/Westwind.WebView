@@ -362,18 +362,17 @@ namespace Westwind.WebView.HtmlToPdf
             wvps.marginLeft = ps.MarginLeft;
             wvps.marginRight = ps.MarginRight;
 
-            wvps.pageRanges = ps.PageRanges;
+            wvps.pageRanges = ps.PageRanges ?? string.Empty;
 
             wvps.displayHeaderFooter = ps.ShouldPrintHeaderAndFooter;
-            wvps.headerTemplate = ps.HeaderTemplate;
-            wvps.footerTemplate = ps.FooterTemplate;
+            wvps.headerTemplate = ps.HeaderTemplate ?? string.Empty;
+            wvps.footerTemplate = ps.FooterTemplate ?? string.Empty;
 
             wvps.generateDocumentOutline = ps.GenerateDocumentOutline;
 
             return wvps.ToJson();
         }
         
-
 
         string PageBreakCss { get; } = @"
     html, body {
