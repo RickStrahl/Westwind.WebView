@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net472;net8.0-windows;.net9.0-windows</TargetFrameworks>
+		<TargetFrameworks>net472;net9.0-windows;net8.0-windows;</TargetFrameworks>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<LangVersion>Latest</LangVersion>
-		<Version>0.2.1</Version>
+		<Version>0.2.2</Version>
 		<Authors>Rick Strahl</Authors>
 		<Nullable>disable</Nullable>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
@@ -15,8 +15,8 @@
 		<PackageId>Westwind.WebView</PackageId>
 		<RootNamespace>Westwind.WebView</RootNamespace>
 		<Title>West Wind WebView Interop Helpers</Title>
-		<Description>A small helper library for the Microsoft.WebView control for WPF</Description>
-		<Summary>A small helper library that provide a base behavior class that wraps initialization and provides Interop functionality.</Summary>
+		<Description>A .NET library to aid WebView2 control hosting, .NET/JavaScript interop and Html to Pdf Conversion</Description>
+		<Summary>A .NET library to aid WebView2 control hosting, .NET/JavaScript interop and Html to Pdf Conversion.</Summary>
 		<PackageCopyright>Rick Strahl, West Wind Technologies 2023-2024</PackageCopyright>
 		<PackageTags>WebView Westwind</PackageTags>
 		<PackageReleaseNotes></PackageReleaseNotes>
@@ -46,8 +46,14 @@
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	
-	<ItemGroup>
+	<!--<ItemGroup>
 		<None Include="icon.png" Pack="true" PackagePath="" />
 		<None Include="LICENSE.MD" Pack="true" PackagePath="" />
+	</ItemGroup>-->
+
+	<ItemGroup>
+		<None Include="../icon.png" Pack="true" PackagePath="" />
+		<None Include="../LICENSE.md" Pack="true" PackagePath="" />
+		<None Include="../README.md" Pack="true" PackagePath="" />
 	</ItemGroup>
 </Project>

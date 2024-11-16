@@ -2,8 +2,7 @@
 
 <a href="https://www.nuget.org/packages/Westwind.WebView/">![](https://img.shields.io/nuget/v/Westwind.WebView.svg)</a> <a href="https://www.nuget.org/packages/Westwind.WebView/">![](https://img.shields.io/nuget/dt/Westwind.WebView.svg)</a>
 
-A .NET support library for the `Microsoft.Web.WebView2` control to aid with common operations and .NET / JavaScript interop as well as [Html to Pdf generation](HtmlToPdf.md).
-
+A .NET support library for the `Microsoft.Web.WebView2` control to aid with common operations and .NET / JavaScript interop as well as [Html to Pdf generation](https://github.com/RickStrahl/Westwind.WebView/blob/master/HtmlToPdf.md).
 
 The library provides:
 
@@ -18,7 +17,7 @@ The WebView handler optionally uses a cached WebView environment to ensure consi
 
 * **Html To Pdf Conversion: HtmlToPdfHost**  
 A standalone `HtmlToPdfHost` component that can be used to convert Html content from any Url or local file into PDF files or streams using the Chromium PDF generation engine. Unlike many other Html to Pdf generation tools, this component uses the built-in Windows WebView Runtime, so **there's no large runtime dependency** in your applications.      
-[HtmlToPdf functionality is documented separately](HtmlToPdf.md).
+[HtmlToPdf functionality is documented separately](https://github.com/RickStrahl/Westwind.WebView/blob/master/HtmlToPdf.md).
 
 The WebView Handler is meant to be used when you need to do a lot of Interop between your .NET and JavaScript code. It ties together the WebView initialization, calling of methods in JavaScript and receiving callbacks back into .NET from JavaScript and hooking common events that you might have to deal with.
 

@@ -1,5 +1,5 @@
-West Wind WebView
-=================
+West Wind WebView Library for .NET
+==================================
 
 MIT License
 -----------
