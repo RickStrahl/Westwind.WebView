@@ -127,7 +127,7 @@ namespace Westwind.WebView.HtmlToPdf
             set
             {
                 if (string.IsNullOrEmpty(value))
-                    HeaderTemplate = "";
+                    HeaderTemplate = string.Empty;
                 else
                     HeaderTemplate = $"<div style='font-size: 11.5px; width: 100%; text-align: center;'>{value}</div>";
             }
@@ -142,7 +142,7 @@ namespace Westwind.WebView.HtmlToPdf
             set
             {
                 if (string.IsNullOrEmpty(value))
-                    FooterTemplate = "";
+                    FooterTemplate = string.Empty;
                 else
                     FooterTemplate = $"<div style='font-size: 10px; margin-right: 2em; width: 100%; text-align: right; '>{value}</div>";
             }

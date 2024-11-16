@@ -370,7 +370,7 @@ namespace Westwind.WebView.HtmlToPdf
 
             wvps.generateDocumentOutline = ps.GenerateDocumentOutline;
 
-            return wvps.ToJson();
+           return wvps.ToJson();            
         }
         
 
@@ -408,6 +408,9 @@ namespace Westwind.WebView.HtmlToPdf
     }
 
 
+/// <summary>
+/// DevTools PrintToPdf settings that matches the Chromium structure
+/// </summary>
 public class DevToolsPrintToPdfSettings
 {
     public bool landscape { get; set; } = false;
@@ -433,7 +436,16 @@ public class DevToolsPrintToPdfSettings
     public string ToJson()
     {
         pageRanges = pageRanges ?? string.Empty;
-        return JsonConvert.SerializeObject(this);
+        headerTemplate = headerTemplate ?? string.Empty;
+        footerTemplate = footerTemplate ?? string.Empty;      
+
+#if DEBUG        
+        var json = JsonConvert.SerializeObject(this, Formatting.Indented);
+        Debug.WriteLine("PrintToPdf DevTools:\n" + json);
+        return json;
+#endif
+
+        return JsonConvert.SerializeObject(this, Formatting.None);
     }
 }
         
