@@ -262,7 +262,23 @@ namespace Westwind.WebView.HtmlToPdf
         /// </summary>
         /// <returns></returns>
         internal async Task<Stream> PrintToPdfStream()
-        {            
+        {
+
+            // THIS WORKS ON FIRST REQUEST IN IIS
+            //try
+            //{
+            //    var parms = GetWebViewPrintSettings();
+
+            //    // we have to turn the stream into something physical because the form won't stay alive
+            //    using var stream = await WebView.PrintToPdfStreamAsync(parms);
+            //    var ms = new MemoryStream();
+            //    await stream.CopyToAsync(ms);
+            //    ms.Position = 0;
+
+            //    ResultStream = ms;  // don't Close()/Dispose()!
+            //    IsSuccess = true;
+            //    return ResultStream;
+            //}
             try
             {
                 var json = GetDevToolsWebViewPrintSettingsJson();

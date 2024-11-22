@@ -1,5 +1,6 @@
 ﻿using Microsoft.Web.WebView2.Core;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -73,6 +74,25 @@ namespace Westwind.WebView.HtmlToPdf
 
 
         /// <summary>
+        /// Pre-initializes the Print Service which is necessary when running under
+        /// server environment
+        /// </summary>
+        public static void ServerPreInitialize()
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var host = new HtmlToPdfHost();
+                    var result = await host.PrintToPdfStreamAsync("about:blank");                 
+                }
+                catch (Exception ex)
+                {
+                }
+            });
+        }
+
+        /// <summary>
         /// This method prints a PDF from an HTML URl or File to PDF and awaits
         /// the result to be returned. Result is returned as a Memory Stream in
         /// result.ResultStream on success. 
@@ -108,10 +128,10 @@ namespace Westwind.WebView.HtmlToPdf
                 SynchronizationContext.Current.Post( async (state)=>                 
                 {
                     try
-                    {
+                    {                     
                         IsComplete = false;
                         IsCompleteTaskCompletionSource = new TaskCompletionSource<bool>();
-
+                        
                         var host = new CoreWebViewHeadlessHost(this);
                         await host.PrintFromUrlStream(url);
 
