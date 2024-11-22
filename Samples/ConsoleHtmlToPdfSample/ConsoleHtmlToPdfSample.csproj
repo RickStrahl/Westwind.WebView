@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Westwind.Utilities" Version="4.0.20" />
+  </ItemGroup>
+
+  <ItemGroup>    
+    <ProjectReference Include="..\..\WestWind.WebView\Westwind.WebView.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="HtmlSampleFile-SelfContained.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="HtmlSampleFileLonger-SelfContained.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

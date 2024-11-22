@@ -28,7 +28,7 @@
 	<!-- This was never required - required now or get errors-->  
 	<!--<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2651.64" />-->
 	  
-	<ProjectReference Include="..\Westwind.WebView\Westwind.WebView.csproj" />
+	<ProjectReference Include="..\..\Westwind.WebView\Westwind.WebView.csproj" />
   </ItemGroup>
 
 

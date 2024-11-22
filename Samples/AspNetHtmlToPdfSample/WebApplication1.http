@@ -1,0 +1,20 @@
+@WebApplication1_HostAddress=http://localhost:5063
+
+GET http://localhost:5063/pdf HTTP/2.0
+Accept: application/json
+Websurge-Request-Name: PDF as Json
+
+###
+
+GET http://localhost:5063/pdf/rawpdf HTTP/2.0
+Accept-Encoding: gzip,deflate
+Websurge-Request-Name: Direct PDF access
+
+###
+
+GET http://localhost:5063/pdf/ping HTTP/2.0
+Accept-Encoding: gzip,deflate
+Websurge-Request-Name: Ping Info
+
+###
+

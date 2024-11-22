@@ -257,6 +257,19 @@ The following demonstrates running this library in an ASP.NET Core application i
 
 ![Running Under IIS](Assets/RunningUnderIIS.png)
 
+
+> ##### Call HtmlToPdfHost.ServerPreInitialize()
+> If you're running inside of ASP.NET make sure to call `HtmlToPdfHost.ServerPreInitialize()` when your **server first starts up**. This runs a dummy request to initialize the WebView engine which is required in order to work reliably. Without this call during startup your first request may otherwise fail.
+> ```cs
+> // Program.cs
+> ...
+> HtmlToPdfHost.ServerPreInitialize();
+> 
+> // preferably before builder.Build() is called
+> var app = builder.Build();
+> ```
+
+
 But as is always the case you have to make sure you have the right permissions to access the files you want to convert and if you're generating to a file that  you have write access. Generally you'll want to generate to stream.
 
 You can look at the [AspNetSample](/AspNetSample) which contains an ASP.NET Core test project that demonstrates Web usage. To see the permissions issues though you have to run IIS using a default or non-interactive account.
