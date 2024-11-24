@@ -62,21 +62,26 @@ namespace Westwind.WebView.HtmlToPdf
             InitializeAsync();
         }
 
-        private IntPtr HWND_MESSAGE = new IntPtr(-3);
+private IntPtr HWND_MESSAGE =  new IntPtr(-3);
 
-        protected async void InitializeAsync()
-        {
+protected async void InitializeAsync()
+{
+            // HACK: Remove
+            //StringUtils.LogString("About to create WebView Controller "  + HtmlToPdfHost.WebViewEnvironmentPath );
+            
+
             // must create a data folder if running out of a secured folder that can't write like Program Files
             var environment = await CoreWebView2Environment.CreateAsync(userDataFolder: HtmlToPdfHost.WebViewEnvironmentPath);
-
             var controller = await environment.CreateCoreWebView2ControllerAsync(HWND_MESSAGE);
+
+            // StringUtils.LogString("WebView Controller Rendered");
             controller.DefaultBackgroundColor = ColorTranslator.FromHtml(HtmlToPdfHost.BackgroundHtmlColor ?? "white");
 
             WebView = controller.CoreWebView2;                     
             WebView.DOMContentLoaded += CoreWebView2_DOMContentLoaded;
 
             // Ensure that control is initialized before we can navigate!
-            IsInitializedTaskCompletionSource.SetResult(true);            
+            IsInitializedTaskCompletionSource.SetResult(true);
         }
 
 
@@ -89,6 +94,8 @@ namespace Westwind.WebView.HtmlToPdf
         /// <returns></returns>
         internal async Task PrintFromUrl(string url, string outputFile)
         {
+      
+
             await IsInitializedTaskCompletionSource.Task;
 
             PdfPrintOutputMode = PdfPrintOutputModes.File;

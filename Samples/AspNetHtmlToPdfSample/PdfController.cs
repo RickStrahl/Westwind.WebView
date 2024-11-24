@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using Westwind.WebView.HtmlToPdf;
@@ -51,7 +52,7 @@ namespace WebApplication1
         public async Task<IActionResult> RawPdf()
         {
             var file = Path.GetFullPath("./HtmlSampleFile-SelfContained.html");
-
+            
             var pdf = new HtmlToPdfHost();
             var pdfResult = await pdf.PrintToPdfStreamAsync(file, new WebViewPrintSettings {  PageRanges = "1-10"});
 
@@ -106,7 +107,12 @@ namespace WebApplication1
                 Message = "Hello World.",
                 Time = DateTime.Now,
                 User = Environment.UserName,
-                LoggedOnUser = User?.Identity?.Name
+                Principal = System.Security.Principal.WindowsIdentity.GetCurrent().Name,
+                WebViewEnvironmentPath = HtmlToPdfHost.DefaultWebViewEnvironmentPath,                
+                OS = System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+                System.Runtime.InteropServices.RuntimeInformation.OSArchitecture,
+                Framework = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
+                Executable = Assembly.GetEntryAssembly().Location
             };
         }
     }

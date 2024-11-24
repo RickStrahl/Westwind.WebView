@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Text;
 
 namespace Westwind.WebView.HtmlToPdf.Utilities
@@ -131,6 +132,30 @@ namespace Westwind.WebView.HtmlToPdf.Utilities
             return string.Empty;
         }
 
+        internal static string LogStringDefaultFile { get; set; } = "d:\\temp\\_LogOutput.txt"; // Path.Combine(Path.GetTempPath(), "_LogOutput.txt");
 
+        /// <summary>
+        /// Simple Logging method that allows quickly writing a string to a file
+        /// </summary>
+        /// <param name="output"></param>
+        /// <param name="filename"></param>
+        /// <param name="encoding">if not specified used UTF-8</param>
+        internal static void LogString(string output, string filename=null, Encoding encoding = null)
+        {
+            if (encoding == null)
+                encoding = Encoding.UTF8;
+
+            if (string.IsNullOrEmpty(filename))
+                filename = LogStringDefaultFile;
+
+            lock (_logLock)
+            {
+                var writer = new StreamWriter(filename, true, encoding);
+                writer.WriteLine(DateTime.Now + " - " + output);
+                writer.Close();
+            }
+        }
+
+        private static object _logLock = new object();        
     }
 }

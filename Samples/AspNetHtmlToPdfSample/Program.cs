@@ -6,9 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+
 // ***IMPORTANT!***
 // Initialize Server so that WebView can initialize even if it fails
-HtmlToPdfHost.ServerPreInitialize();
+HtmlToPdfHost.ServerPreInitialize(  Path.Combine(builder.Environment.ContentRootPath,"WebViewEnvironment") );
 
 
 var app = builder.Build();

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Westwind.WebView.HtmlToPdf.Utilities;
 
 namespace Westwind.WebView.HtmlToPdf
 {
@@ -38,8 +39,9 @@ namespace Westwind.WebView.HtmlToPdf
         /// (If you already use a WebView keep all WebViews pointing at the same environment: 
         /// https://weblog.west-wind.com/posts/2023/Oct/31/Caching-your-WebView-Environment-to-manage-multiple-WebView2-Controls
         /// </summary>
-        public string WebViewEnvironmentPath { get; set; } = Path.Combine(Path.GetTempPath(), "WebView2_Environment");
+        public string WebViewEnvironmentPath { get; set; } = DefaultWebViewEnvironmentPath;
 
+        public static string DefaultWebViewEnvironmentPath {get; set; } = Path.Combine(Path.GetTempPath(), "WebView2_Environment");
 
         /// <summary>
         /// Options to inject and optimize CSS for print operations in PDF generation.
@@ -77,8 +79,22 @@ namespace Westwind.WebView.HtmlToPdf
         /// Pre-initializes the Print Service which is necessary when running under
         /// server environment
         /// </summary>
-        public static void ServerPreInitialize()
+        /// <param name="defaultWebViewEnvironmentPath">
+        /// Provide a folder where the WebView Environment can be written to. 
+        /// 
+        /// *** IMPORTANT: ***
+        /// This location has to be writeable using the server's identity so 
+        /// be sure to set folder permissions for limited user accounts.
+        /// 
+        /// Defaults to the User Temp folder, but for server apps that folder may
+        /// not be accessible, so it's best to explicitly set and configure this
+        /// folder.
+        /// </param>
+        public static void ServerPreInitialize(string defaultWebViewEnvironmentPath = null)
         {
+            if (!string.IsNullOrEmpty(defaultWebViewEnvironmentPath))
+                HtmlToPdfHost.DefaultWebViewEnvironmentPath = defaultWebViewEnvironmentPath;
+
             Task.Run(async () =>
             {
                 try
@@ -167,7 +183,7 @@ namespace Westwind.WebView.HtmlToPdf
                     finally
                     {
                         IsComplete = true;
-                        Application.ExitThread();  // now kill the event loop and thread
+                        Application.ExitThread();  // now kill the event loop and thread                  
                     }
                 }, null);                
                 Application.Run();  // Windows Event loop needed for WebView in system context!
