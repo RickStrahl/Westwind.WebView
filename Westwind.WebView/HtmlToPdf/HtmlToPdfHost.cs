@@ -1,13 +1,9 @@
-﻿using Microsoft.Web.WebView2.Core;
-using System;
-using System.Diagnostics;
-using System.Drawing;
+﻿using System;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Westwind.WebView.HtmlToPdf.Utilities;
 
 namespace Westwind.WebView.HtmlToPdf
 {
@@ -32,15 +28,26 @@ namespace Westwind.WebView.HtmlToPdf
         public bool IsComplete { get; set; }
 
         /// <summary>
-        /// The location of the WebView environment folder that is required
+        /// The folder location of the WebView environment folder that is required
         /// for WebView operation. Uses a default in the temp folder but you
         /// can customize to use an application specific folder.
         /// 
         /// (If you already use a WebView keep all WebViews pointing at the same environment: 
         /// https://weblog.west-wind.com/posts/2023/Oct/31/Caching-your-WebView-Environment-to-manage-multiple-WebView2-Controls
+        /// 
+        /// Make sure this folder is writable by the application's user identity!
         /// </summary>
         public string WebViewEnvironmentPath { get; set; } = DefaultWebViewEnvironmentPath;
 
+
+        /// <summary>
+        /// The default folder location for the WebView environment folder that is used when
+        /// no explicit path is provided. This is a static value that is global to 
+        /// the Application, so it's best set during application startup to ensure
+        /// that the same folder is used.
+        /// 
+        /// Make sure this folder is writable by the application's user identity!
+        /// </summary>
         public static string DefaultWebViewEnvironmentPath {get; set; } = Path.Combine(Path.GetTempPath(), "WebView2_Environment");
 
         /// <summary>
