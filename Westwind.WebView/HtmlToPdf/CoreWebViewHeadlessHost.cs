@@ -221,7 +221,7 @@ protected async void InitializeAsync()
                 if (File.Exists(file))
                     File.Delete(file);
 
-                if (HtmlToPdfHost.UseClassicPdfGeneration)
+                if (HtmlToPdfHost.UseServerPdfGeneration)
                 {
                     var webViewPrintSettings = GetWebViewPrintSettings();
                     Debug.WriteLine($"WebViewPrintSettings to file {file}:\n\n" + JsonConvert.SerializeObject(webViewPrintSettings, Formatting.Indented));
@@ -287,7 +287,7 @@ protected async void InitializeAsync()
             {
                 // Server Apps should use direct WebView PDF generation
                 // as Server environments don't support DevTools
-                if (HtmlToPdfHost.UseClassicPdfGeneration)
+                if (HtmlToPdfHost.UseServerPdfGeneration)
                 {
                     var parms = GetWebViewPrintSettings();
 
