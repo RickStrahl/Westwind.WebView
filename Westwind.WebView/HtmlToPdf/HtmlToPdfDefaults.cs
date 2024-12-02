@@ -26,7 +26,7 @@ namespace Westwind.WebView.HtmlToPdf
         /// to generate PDF output. Use this for server operation as the DevTools printing 
         /// is not supported in server environments like IIS.
         /// </summary>
-        public static bool UseClassicPdfGeneration { get; set; } = false;
+        public static bool UseServerPdfGeneration { get; set; } = false;
 
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Westwind.WebView.HtmlToPdf
             if (!string.IsNullOrEmpty(defaultWebViewEnvironmentPath))
                 HtmlToPdfDefaults.WebViewEnvironmentPath = defaultWebViewEnvironmentPath;
 
-            UseClassicPdfGeneration = true;
+            UseServerPdfGeneration = true;
 
             Task.Run(async () =>
             {

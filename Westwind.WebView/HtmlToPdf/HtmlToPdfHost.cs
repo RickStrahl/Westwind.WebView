@@ -78,7 +78,7 @@ namespace Westwind.WebView.HtmlToPdf
         /// This is required for unattended server operation in IIS and other
         /// services.
         /// </summary>
-        public bool UseClassicPdfGeneration { get; set; } = HtmlToPdfDefaults.UseClassicPdfGeneration;
+        public bool UseServerPdfGeneration { get; set; } = HtmlToPdfDefaults.UseServerPdfGeneration;
 
        
 

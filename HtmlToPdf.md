@@ -21,6 +21,8 @@ This library provides a quick way to print Html to Pdf on Windows using the WebV
 
 The base library uses the built-in **WebView2 Runtime in Windows so it has no external dependencies for your applications** assuming you are running on a recent version of Windows that has the WebView2 Runtime installed. The extended package version provides additional features, but it also has additional dependencies and is slower to run and has a larger distribution footprint. In order to keep the base functionality very small and lean these two packages have been separated.
 
+> #### Server Unattended Usage Requires Special Consideration
+> HtmlToPdf generation works in server environments, but there is one limitation in that you cannot generate a table of contents at the moment. There's a server specific configuration that must be set. For more info see below.
 
 If you would like to find out more how this library works and how the original code and Pdf code was build, you can check out this blog post here:
 
@@ -248,30 +250,20 @@ The `Task` based methods are easiest to use so that's the recommended syntax. Th
 
 Both approaches run on a separate STA thread to ensure that the WebView can run regardless of whether you are running inside of an application that has a main UI/STA thread and it works inside of Windows Service contexts.
 
-## FAQ
-
-### Does it work it work in non-Interactive Environments like a Web Application
-Yes, but you have to be careful that you have permissions to retrieve any files you might be rendering.
-
-The following demonstrates running this library in an ASP.NET Core application in IIS using the ANCM using the standard `ApplicationPoolIdentity` account.
+## Unattended Server Operation (IIS, Windows Services etc.)
+HtmlToPdf generation is supported in unattended mode, but there are some requirements and limitations in this environment. 
 
 ![Running Under IIS](Assets/RunningUnderIIS.png)
 
+Requirements and limitations:
 
-> ##### Call HtmlToPdfHost.ServerPreInitialize()
-> If you're running inside of ASP.NET make sure to call `HtmlToPdfHost.ServerPreInitialize()` when your **server first starts up**. This runs a dummy request to initialize the WebView engine which is required in order to work reliably. Without this call during startup your first request may otherwise fail.
-> ```cs
-> // Program.cs
-> ...
-> HtmlToPdfHost.ServerPreInitialize();
-> 
-> // preferably before builder.Build() is called
-> var app = builder.Build();
-> ```
+* Table of Content Generation is not supported (no DevTools operation)
+* File output may not be supported (depending on permissions)
+* Application has to be set for server operation on startup
 
+Before looking at some of the limitations and requirements lets look at how you can use this library in ASP.NET Core.
 
-But as is always the case you have to make sure you have the right permissions to access the files you want to convert and if you're generating to a file that  you have write access. Generally you'll want to generate to stream.
-
+### Running HtmlToPdf in ASP.NET
 You can look at the [AspNetSample](/AspNetSample) which contains an ASP.NET Core test project that demonstrates Web usage. To see the permissions issues though you have to run IIS using a default or non-interactive account.
 
 To return a PDF as a document in a Controller:
@@ -295,11 +287,55 @@ public async Task<IActionResult> RawPdf()
         });
     }
 
-    return new FileStreamResult(pdfResult.ResultStream, "application/pdf");             
+    return new FileStreamResult(pdfResult.ResultStream, "application/pdf"); 
 }
 ```
 
-In this scenario I'm running **ApplicationPoolIdentity** for the Application Pool and there are no special permissions given.
+Typically you'll want to print to stream so no files are created on disk. You can also write to file and store the output, but make sure you have adequate permissions to write in the target location.
+
+### Server vs. non-Server Operation
+This library by default runs in non-server mode and uses the W**ebView2 DevTools Protocol** to print PDF files. For server mode it uses the  WebView's built in PDF generation that's also used by actual Chromium browser UIs.
+
+The difference between these two APIs is that the DevTools API provides a few additional features not available in the built-in print API - most notably for this library the PDF Table Of Contents generation. 
+
+> #### Server Limitations
+> Unfortunately the DevTools API currently does not work in unattended, non-active-desktop environments and so this library falls back to the WebView functionality.
+> 
+> Therefore:
+>
+> Server Operation **does not** support the auto generated PDF Table of Contents
+
+### Configure for running in Server Mode
+In order to run in 'server' mode you need to configure the application during startup (before any PDF generation). This effectively involves setting the `HtmlToPdfDefaults.UseServerPdfGeneration = true`.
+
+You can do this in two ways:
+
+* Setting the variable directly in your server startup code
+* Calling `HtmlToPdfDefaults.ServerPreInitialize()`   <small>*(recommended)*</small>
+
+`ServerPreInitialize()` sets the server flag, and also runs a small empty document dummy PDF generation to prime the PDF engine for faster startup. This also fixes an occasional issue with first time rendering of PDF output.
+
+```cs
+// Program.cs
+...
+
+var webViewEnvPath = Path.GetFullPath("WebViewEnvironment")
+HtmlToPdfDefaults.ServerPreInitialize(webViewEnvPath);
+
+// alternately set just  
+// HtmlToPdfDefaults.UseServerPdfGeneration = true;
+
+// preferably before builder.Build() is called
+ var app = builder.Build();
+```
+
+### Permissions
+But as is always the case when you run in a server environment, you have to make sure you have the right permissions to access the files you want to convert and if you're generating to a file that  you have write access. Generally you'll want to generate to stream to avoid having to write files to disk
+
+#### WebView Environment Permissions
+The code above specifies an explicit path for the WebView environment. By default the `%TEMP%` folder is used, but in server environments there may be no temp folder for some accounts like the ApplicationPoolIdentity. So you can specify a path here.
+
+I've found that you can write into your content root and that works even when running with IIS Application Pool Identity (which is odd, but it works for me). Your mileage may vary.
 
 
 ## Support us
