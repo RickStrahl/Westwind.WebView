@@ -70,11 +70,10 @@ protected async void InitializeAsync()
             // must create a data folder if running out of a secured folder that can't write like Program Files
             var environment = await CoreWebView2Environment.CreateAsync(userDataFolder: HtmlToPdfHost.WebViewEnvironmentPath);
 
-            // HACK: Remove
-            StringUtils.LogString("About to create WebView Controller " + HtmlToPdfHost.WebViewEnvironmentPath);
-
+         
             var controller = await environment.CreateCoreWebView2ControllerAsync(HWND_MESSAGE);
 
+            // HACK: Remove!
             StringUtils.LogString("Created  Controller");
 
             // StringUtils.LogString("WebView Controller Rendered");
@@ -96,9 +95,7 @@ protected async void InitializeAsync()
         /// <param name="outputFile"></param>
         /// <returns></returns>
         internal async Task PrintFromUrl(string url, string outputFile)
-        {
-      
-
+        {     
             await IsInitializedTaskCompletionSource.Task;
 
             PdfPrintOutputMode = PdfPrintOutputModes.File;
@@ -158,7 +155,7 @@ protected async void InitializeAsync()
 
         private async void CoreWebView2_DOMContentLoaded(object sender, Microsoft.Web.WebView2.Core.CoreWebView2DOMContentLoadedEventArgs e)
         {
-            try
+                  try
             {
                 await InjectCssAndScript();
                 
@@ -208,50 +205,61 @@ protected async void InitializeAsync()
         internal async Task PrintToPdf()
         {
             if (File.Exists(_outputFile))
+            {
                 File.Delete(_outputFile);
+            }
+
+            if (HtmlToPdfHost.DelayPdfGenerationMs > 0)
+            {
+                await Task.Delay(HtmlToPdfHost.DelayPdfGenerationMs);
+            }
 
             try
             {
-                if (File.Exists(_outputFile))
-                    File.Delete(_outputFile);
+                var file = Path.GetFullPath(_outputFile);
 
-                // https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
-                //{
-                //    "landscape": false,    
-                //    "printBackground": true,
-                //    "scale": 1,
-                //    "paperWidth": 8.5,
-                //    "paperHeight": 11,
-                //    "marginTop": 0.50,
-                //    "marginBottom": 0.30,
-                //    "marginLeft": 0.40,
-                //    "marginRight": 0.40,
-                //    "pageRanges": "",  
-                //    "headerTemplate": "<div style='font-size: 11.5px; width: 100%; text-align: center;'><span class='title'></span></div>",
-                //    "footerTemplate": "<div style='font-size: 10px; clear: all; width: 100%; margin-right: 3em; text-align: right; '><span class='pageNumber'></span> of <span class='totalPages'></span></div>",
-                //    "displayHeaderFooter": true,
-                //    "preferCSSPageSize": false,
-                //    "generateDocumentOutline": true
-                //}
+                if (File.Exists(file))
+                    File.Delete(file);
 
-                if (HtmlToPdfHost.DelayPdfGenerationMs > 0)
+                if (HtmlToPdfHost.UseClassicPdfGeneration)
                 {
-                    await Task.Delay(HtmlToPdfHost.DelayPdfGenerationMs);
+                    var webViewPrintSettings = GetWebViewPrintSettings();
+                    Debug.WriteLine($"WebViewPrintSettings to file {file}:\n\n" + JsonConvert.SerializeObject(webViewPrintSettings, Formatting.Indented));
+                    
+                    await WebView.PrintToPdfAsync(file, webViewPrintSettings);
                 }
-
-                var json = GetDevToolsWebViewPrintSettingsJson();       
-                var pdfBase64 = await  WebView.CallDevToolsProtocolMethodAsync("Page.printToPDF", json);
-
-                if (!string.IsNullOrEmpty(pdfBase64))
+                else
                 {
-                    // avoid JSON Serializer Dependency
-                    var b64Data = StringUtils.ExtractString(pdfBase64,"\"data\":\"","\"}");
-                    var pdfData = Convert.FromBase64String(b64Data);
-                    File.WriteAllBytes(_outputFile, pdfData);    // 
+                    // https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-printToPDF
+                    //{
+                    //    "landscape": false,    
+                    //    "printBackground": true,
+                    //    "scale": 1,
+                    //    "paperWidth": 8.5,
+                    //    "paperHeight": 11,
+                    //    "marginTop": 0.50,
+                    //    "marginBottom": 0.30,
+                    //    "marginLeft": 0.40,
+                    //    "marginRight": 0.40,
+                    //    "pageRanges": "",  
+                    //    "headerTemplate": "<div style='font-size: 11.5px; width: 100%; text-align: center;'><span class='title'></span></div>",
+                    //    "footerTemplate": "<div style='font-size: 10px; clear: all; width: 100%; margin-right: 3em; text-align: right; '><span class='pageNumber'></span> of <span class='totalPages'></span></div>",
+                    //    "displayHeaderFooter": true,
+                    //    "preferCSSPageSize": false,
+                    //    "generateDocumentOutline": true
+                    //}
+                    var json = GetDevToolsWebViewPrintSettingsJson();
+                    var pdfBase64 = await WebView.CallDevToolsProtocolMethodAsync("Page.printToPDF", json);
+
+                    if (!string.IsNullOrEmpty(pdfBase64))
+                    {
+                        // avoid JSON Serializer Dependency
+                        var b64Data = StringUtils.ExtractString(pdfBase64, "\"data\":\"", "\"}");
+                        var pdfData = Convert.FromBase64String(b64Data);
+                        File.WriteAllBytes(_outputFile, pdfData);    // 
+                    }
                 }
-
-                //await WebView.PrintToPdfAsync(_outputFile, webViewPrintSettings);
-
+                
                 if (File.Exists(_outputFile))
                     IsSuccess = true;
                 else
@@ -275,24 +283,31 @@ protected async void InitializeAsync()
         {
 
             // THIS WORKS ON FIRST REQUEST IN IIS
-            //try
-            //{
-            //    var parms = GetWebViewPrintSettings();
-
-            //    // we have to turn the stream into something physical because the form won't stay alive
-            //    using var stream = await WebView.PrintToPdfStreamAsync(parms);
-            //    var ms = new MemoryStream();
-            //    await stream.CopyToAsync(ms);
-            //    ms.Position = 0;
-
-            //    ResultStream = ms;  // don't Close()/Dispose()!
-            //    IsSuccess = true;
-            //    return ResultStream;
-            //}
             try
             {
+                // Server Apps should use direct WebView PDF generation
+                // as Server environments don't support DevTools
+                if (HtmlToPdfHost.UseClassicPdfGeneration)
+                {
+                    var parms = GetWebViewPrintSettings();
+
+                    // we have to turn the stream into something physical because the form won't stay alive
+                    Debug.WriteLine("WebViewPrintSettings:\n\n" + JsonConvert.SerializeObject(parms, Formatting.Indented));
+                    using var stream = await WebView.PrintToPdfStreamAsync(parms);
+
+                    var ms = new MemoryStream();
+                    await stream.CopyToAsync(ms);
+                    ms.Position = 0;
+
+                    ResultStream = ms;  // don't Close()/Dispose()!
+                    IsSuccess = true;
+                    return ResultStream;
+                }
+
+                // Interactive can use the WebView DevTools API
                 var json = GetDevToolsWebViewPrintSettingsJson();
-                Console.WriteLine(json);
+
+                Debug.WriteLine(json);
                 var pdfBase64 = await WebView.CallDevToolsProtocolMethodAsync("Page.printToPDF", json);
 
                 if (!string.IsNullOrEmpty(pdfBase64))

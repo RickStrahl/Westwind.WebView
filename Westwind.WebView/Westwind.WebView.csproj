@@ -4,7 +4,7 @@
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<LangVersion>Latest</LangVersion>
-		<Version>0.2.4</Version>
+		<Version>0.3</Version>
 		<Authors>Rick Strahl</Authors>
 		<Nullable>disable</Nullable>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
@@ -40,13 +40,11 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<DefineConstants>RELEASE</DefineConstants>
 	</PropertyGroup>
-	
-	<ItemGroup>
-	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2792.45" />
 
-			  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2651.64" />
-					  
-	  		  <!----><PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2792.45" />		
+		<!--<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2592.51" />-->
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	
 

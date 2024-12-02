@@ -52,7 +52,7 @@ namespace WebApplication1
         public async Task<IActionResult> RawPdf()
         {
             var file = Path.GetFullPath("./HtmlSampleFile-SelfContained.html");
-            
+
             var pdf = new HtmlToPdfHost();
             var pdfResult = await pdf.PrintToPdfStreamAsync(file, new WebViewPrintSettings {  PageRanges = "1-10"});
 
@@ -67,6 +67,32 @@ namespace WebApplication1
             }
 
             return new FileStreamResult(pdfResult.ResultStream, "application/pdf");             
+        }
+
+        /// <summary>
+        /// Return raw data as PDF
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("pdftofile")] 
+        public async Task<IActionResult> PdfToFile()
+        {
+            var file = Path.GetFullPath("./HtmlSampleFile-SelfContained.html");
+
+            var pdf = new HtmlToPdfHost();
+            var pdfResult = await pdf.PrintToPdfAsync(file, "GeneratedPdf.pdf", new WebViewPrintSettings { PageRanges = "1-10" });
+
+            if (pdfResult == null || !pdfResult.IsSuccess)
+            {
+                Response.StatusCode = 500;
+                return new JsonResult(new
+                {
+                    isError = true,
+                    message = pdfResult.Message
+                });
+            }
+
+            var path = Path.GetFullPath("GeneratedPdf.pdf");
+            return PhysicalFile(path, "application/pdf");            
         }
 
         /// <summary>
@@ -91,7 +117,7 @@ namespace WebApplication1
                     message = pdfResult.Message
                 });
             }
-
+            
             return new FileStreamResult(pdfResult.ResultStream,  "application/pdf");
         }
 
@@ -108,7 +134,7 @@ namespace WebApplication1
                 Time = DateTime.Now,
                 User = Environment.UserName,
                 Principal = System.Security.Principal.WindowsIdentity.GetCurrent().Name,
-                WebViewEnvironmentPath = HtmlToPdfHost.DefaultWebViewEnvironmentPath,                
+                WebViewEnvironmentPath = HtmlToPdfDefaults.WebViewEnvironmentPath,                
                 OS = System.Runtime.InteropServices.RuntimeInformation.OSDescription,
                 System.Runtime.InteropServices.RuntimeInformation.OSArchitecture,
                 Framework = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,

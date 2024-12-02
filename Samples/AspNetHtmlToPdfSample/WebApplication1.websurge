@@ -10,6 +10,12 @@ Websurge-Request-Name: Direct PDF access
 
 ------------------------------------------------------------------
 
+GET pdf/pdftofile HTTP/2.0
+Accept-Encoding: gzip,deflate
+Websurge-Request-Name: PrintToFile
+
+------------------------------------------------------------------
+
 GET pdf/pdffromurl?url=https://microsoft.com HTTP/2.0
 Accept-Encoding: gzip,deflate
 Websurge-Request-Name: Direct PDF access EX
@@ -26,11 +32,10 @@ Websurge-Request-Name: Ping Info
 ----- Start WebSurge Options -----
 
 {
-  "SiteBaseUrl": "http://localhost:2205/",
+  "SiteBaseUrl": "http://localhost:5063/",
   "RecentSiteBaseUrlList": [
-    "http://localhost:2205/",
     "http://localhost:5063/",
-    "http://localhost/PdfWebApp/"
+    "http://localhost:2205/",
   ],
   "OnlineSessionId": null,
   "SessionVariables": {

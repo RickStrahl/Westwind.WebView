@@ -37,18 +37,8 @@ namespace Westwind.WebView.HtmlToPdf
         /// 
         /// Make sure this folder is writable by the application's user identity!
         /// </summary>
-        public string WebViewEnvironmentPath { get; set; } = DefaultWebViewEnvironmentPath;
+        public string WebViewEnvironmentPath { get; set; } = HtmlToPdfDefaults.WebViewEnvironmentPath;
 
-
-        /// <summary>
-        /// The default folder location for the WebView environment folder that is used when
-        /// no explicit path is provided. This is a static value that is global to 
-        /// the Application, so it's best set during application startup to ensure
-        /// that the same folder is used.
-        /// 
-        /// Make sure this folder is writable by the application's user identity!
-        /// </summary>
-        public static string DefaultWebViewEnvironmentPath {get; set; } = Path.Combine(Path.GetTempPath(), "WebView2_Environment");
 
         /// <summary>
         /// Options to inject and optimize CSS for print operations in PDF generation.
@@ -66,7 +56,7 @@ namespace Westwind.WebView.HtmlToPdf
         /// Also note that non-white colors may have to use custom HeaderTemplate and 
         /// FooterTemplate to set the foregraound color of the text to match the background.
         /// </summary>
-        public string BackgroundHtmlColor { get; set; } = "#ffffff";
+        public string BackgroundHtmlColor { get; set; } = HtmlToPdfDefaults.BackgroundHtmlColor;
 
 
         /// <summary>
@@ -81,39 +71,16 @@ namespace Westwind.WebView.HtmlToPdf
         /// </summary>
         public int DelayPdfGenerationMs { get; set; }
 
-
         /// <summary>
-        /// Pre-initializes the Print Service which is necessary when running under
-        /// server environment
+        /// If set to to true uses class PDF generation which does not support
+        /// Table of Contents generation. 
+        /// 
+        /// This is required for unattended server operation in IIS and other
+        /// services.
         /// </summary>
-        /// <param name="defaultWebViewEnvironmentPath">
-        /// Provide a folder where the WebView Environment can be written to. 
-        /// 
-        /// *** IMPORTANT: ***
-        /// This location has to be writeable using the server's identity so 
-        /// be sure to set folder permissions for limited user accounts.
-        /// 
-        /// Defaults to the User Temp folder, but for server apps that folder may
-        /// not be accessible, so it's best to explicitly set and configure this
-        /// folder.
-        /// </param>
-        public static void ServerPreInitialize(string defaultWebViewEnvironmentPath = null)
-        {
-            if (!string.IsNullOrEmpty(defaultWebViewEnvironmentPath))
-                HtmlToPdfHost.DefaultWebViewEnvironmentPath = defaultWebViewEnvironmentPath;
+        public bool UseClassicPdfGeneration { get; set; } = HtmlToPdfDefaults.UseClassicPdfGeneration;
 
-            Task.Run(async () =>
-            {
-                try
-                {
-                    var host = new HtmlToPdfHost();
-                    var result = await host.PrintToPdfStreamAsync("about:blank");                 
-                }
-                catch (Exception ex)
-                {
-                }
-            });
-        }
+       
 
         /// <summary>
         /// This method prints a PDF from an HTML URl or File to PDF and awaits
