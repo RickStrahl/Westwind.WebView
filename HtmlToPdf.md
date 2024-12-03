@@ -19,15 +19,15 @@ Output can be generated to:
 * File
 * Stream
 
-Using the following calling methods:
+Using the following callback methods:
 
 * Using an Async Call
-* Using Event Callbacks
+* Using Event Callbacks 
 
 The base library uses the built-in **WebView2 Runtime in Windows so it has no external dependencies for your applications** assuming you are running on a recent version of Windows that has the WebView2 Runtime installed. The extended package version provides additional features, but it also has additional dependencies and is slower to run and has a larger distribution footprint. In order to keep the base functionality very small and lean these two packages have been separated.
 
 > #### Server Unattended Usage Requires Special Consideration
-> HtmlToPdf generation works in server environments, but there is one limitation in that you cannot generate a table of contents at the moment. There's a server specific configuration that must be set. For more info see below.
+> HtmlToPdf generation works in server environments, but there is one limitation in that you cannot generate a table of contents at the moment. There's a server specific configuration that must be set. For more info [see below](#unattended-server-operation-iis-windows-services-etc).
 
 If you would like to find out more how this library works and how the original code and Pdf code was build, you can check out this blog post here:
 
