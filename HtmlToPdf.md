@@ -7,7 +7,7 @@
 
 The **HtmlToPdf feature** of the `Westwind.WebView` library provides a quick way to print Html to Pdf on Windows. It uses the WebView2 Control in headless mode that doesn't require any UI. It can be run from any Windows .NET application, including non-UI and service applications and IIS. 
 
-> Because it uses the built-in Windows WebView2 Runtime and SDK, there are no large dependencies required to use it unlike other tools.
+> Because Html To Pdf generation uses the built-in Windows WebView2 Runtime and SDK, there are no large dependencies required to use it unlike other tools.
 
 Pdf output can be generated from:
 
