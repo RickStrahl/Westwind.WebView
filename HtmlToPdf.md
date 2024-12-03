@@ -2,20 +2,25 @@
 
 #### *Creating Pdf from Html with .NET on Windows using the WebView2 control*
 
-
-| Library        | Nuget Package          |
-|----------------|----------------|
-| Westwind.WebView | [![](https://img.shields.io/nuget/v/Westwind.WebView.svg)](https://www.nuget.org/packages/Westwind.WebView/) [![](https://img.shields.io/nuget/dt/Westwind.WebView.svg)](https://www.nuget.org/packages/Westwind.WebView/) |
-| ~~Westwind.WebView.HtmlToPdf (deprecated)~~ | [![](https://img.shields.io/nuget/v/Westwind.WebView.HtmlToPdf.svg)](https://www.nuget.org/packages/Westwind.WebView.HtmlToPdf/) [![](https://img.shields.io/nuget/dt/Westwind.WebView.HtmlToPdf.svg)](https://www.nuget.org/packages/Westwind.WebView.HtmlToPdf/) |
-
-> [!IMPORTANT]
-> The old `Westwind.WebView.HtmlToPdf` library has been deprecated and has been rolled into this `Westwind.WebView` library. All features and syntax carry over from the old version and the library can be used without changes except swapping out the NuGet package reference.
+ [![](https://img.shields.io/nuget/v/Westwind.WebView.svg)](https://www.nuget.org/packages/Westwind.WebView/) [![](https://img.shields.io/nuget/dt/Westwind.WebView.svg)](https://www.nuget.org/packages/Westwind.WebView/)
 
 
-This library provides a quick way to print Html to Pdf on Windows using the WebView control. You can generate Pdf from Html of a Url or file by using a few different mechanisms:
+The **HtmlToPdf feature** of the `Westwind.WebView` library provides a quick way to print Html to Pdf on Windows. It uses the WebView2 Control in headless mode that doesn't require any UI. It can be run from any Windows .NET application, including non-UI and service applications and IIS. 
 
-* To File
-* To Stream
+> Because it uses the built-in Windows WebView2 Runtime and SDK, there are no large dependencies required to use it unlike other tools.
+
+Pdf output can be generated from:
+
+* An HTML Url
+* An HTML File on disk
+
+Output can be generated to:
+
+* File
+* Stream
+
+Using the following calling methods:
+
 * Using an Async Call
 * Using Event Callbacks
 
