@@ -70,7 +70,7 @@ namespace Westwind.WebView.HtmlToPdf
                     var host = new HtmlToPdfHost();
                     var result = await host.PrintToPdfStreamAsync("about:blank");
                 }
-                catch (Exception ex)
+                catch 
                 {
                 }
             });

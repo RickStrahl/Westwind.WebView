@@ -7,12 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// Physical File Provider
-builder.Services.AddSingleton<IFileProvider>(
-    new PhysicalFileProvider(Directory.GetCurrentDirectory()));
-
 // ***IMPORTANT!***
-// Initialize Server so that WebView can initialize even if it fails
+// Initialize Server so that WebView can render - required only for non-desktop environments/services/IIS
 HtmlToPdfDefaults.ServerPreInitialize(  Path.Combine(builder.Environment.ContentRootPath,"WebViewEnvironment") );
 
 var app = builder.Build();
