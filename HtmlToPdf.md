@@ -24,17 +24,17 @@ Using the following callback methods:
 * Using an Async Call
 * Using Event Callbacks 
 
-The base library uses the built-in **WebView2 Runtime in Windows so it has no external dependencies for your applications** assuming you are running on a recent version of Windows that has the WebView2 Runtime installed. The extended package version provides additional features, but it also has additional dependencies and is slower to run and has a larger distribution footprint. In order to keep the base functionality very small and lean these two packages have been separated.
+The library uses the built-in **WebView2 Runtime in Windows so it has no external dependencies for your applications** assuming you are running on a recent version of Windows that has the WebView2 Runtime installed. 
 
 > #### Server Unattended Usage Requires Special Consideration
-> HtmlToPdf generation works in server environments, but there is one limitation in that you cannot generate a table of contents at the moment. There's a server specific configuration that must be set. For more info [see below](#unattended-server-operation-iis-windows-services-etc).
+> HtmlToPdf generation works in server environments, but there is one limitation in that you cannot generate a table of contents at the moment. There's a server specific configuration that must be set in order to run inside of a service environment like IIS or as a Windows Service. For more info [see below](#unattended-server-operation-iis-windows-services-etc).
 
-If you would like to find out more how this library works and how the original code and Pdf code was build, you can check out this blog post here:
+If you would like to find out more how this library works and how the original code and Pdf code was build, you can check out this blog post:
 
 * [Programmatic Html to Pdf Generation using the WebView2 Control](https://weblog.west-wind.com/posts/2024/Mar/26/Programmatic-Html-to-PDF-Generation-using-the-WebView2-Control-with-NET)
 
 ## Prerequisites
-The library is Windows specific, but it works in a variety of environments on Windows.
+The library is Windows specific and works with:
 
 ### Support for
 * Windows 11/10 Server 2019/2022
@@ -59,10 +59,10 @@ Deployed applications have the following dependencies:
 On recent updates of Windows 11 and 10, the WebView is pre-installed as a system component. On Servers however, you may have to explicitly install the WebView Runtime.
 
 * [Windows Desktop Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)  
-The WebView2 component is dependent on Windows Desktop Runtime libraries and therefore requires the Desktop runtime to be installed **even for server applications**. 
+The WebView2 component is dependent on Windows Desktop Runtime libraries and therefore requires the Desktop runtime to be installed **even for server applications**. On Server OS versions the WebView2 runtime has to be explicitly installed as it's not pre-installed by Windows.
 
 ## Using the library
-This library only has a single dependency on the WebView control and provides very fast base Html to PDF conversion. This library is lean and fast and does just base Pdf conversion.
+This library only has a single dependency on the WebView control and provides very fast base Html to PDF conversion. 
 
 You can install this NuGet package:
 
