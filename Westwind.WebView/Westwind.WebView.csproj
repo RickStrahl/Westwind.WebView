@@ -4,7 +4,7 @@
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<LangVersion>Latest</LangVersion>
-		<Version>0.3</Version>
+		<Version>0.3.1</Version>
 		<Authors>Rick Strahl</Authors>
 		<Nullable>disable</Nullable>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
