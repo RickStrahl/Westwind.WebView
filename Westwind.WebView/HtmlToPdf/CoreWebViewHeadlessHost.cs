@@ -69,12 +69,8 @@ protected async void InitializeAsync()
             
             // must create a data folder if running out of a secured folder that can't write like Program Files
             var environment = await CoreWebView2Environment.CreateAsync(userDataFolder: HtmlToPdfHost.WebViewEnvironmentPath);
-
          
             var controller = await environment.CreateCoreWebView2ControllerAsync(HWND_MESSAGE);
-
-            // HACK: Remove!
-            StringUtils.LogString("Created  Controller");
 
             // StringUtils.LogString("WebView Controller Rendered");
             controller.DefaultBackgroundColor = ColorTranslator.FromHtml(HtmlToPdfHost.BackgroundHtmlColor ?? "white");
