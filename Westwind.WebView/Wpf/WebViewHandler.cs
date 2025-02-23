@@ -230,7 +230,7 @@ namespace Westwind.WebView.Wpf
         /// <param name="webViewBrowser">WebView2 Browser instance</param>=
         /// <param name="webViewEnvironmentFolder">optional environment folder on disk - can be null</param>
         /// <param name="hostObject">optional .NET callback object - can be null exposes as .dotnet in JavaScript or override HostObjectName</param>
-        public WebViewHandler(WebView2 webViewBrowser, string webViewEnvironmentFolder, object hostObject)
+        public WebViewHandler(WebView2 webViewBrowser, string webViewEnvironmentFolder = null, object hostObject = null)
         {            
             WebViewEnvironmentFolder = webViewEnvironmentFolder;
             HostObject = hostObject;
@@ -262,7 +262,7 @@ namespace Westwind.WebView.Wpf
             //            waits until the visibility changes.
             if (!IsInitialized)  // Ensure this doesn't run more than once
             {
-                await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser);
+                await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser, WebViewEnvironment, WebViewEnvironmentFolder);
 
                 IsInitialized = true;
                 IsInitializedTaskCompletionSource.SetResult();
@@ -386,9 +386,9 @@ namespace Westwind.WebView.Wpf
         protected virtual async void OnDomContentLoaded(object sender, CoreWebView2DOMContentLoadedEventArgs e)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            IsLoaded = true;            
-            if (IsLoadedTaskCompletionSource?.Task != null && !IsLoadedTaskCompletionSource.Task.IsCompleted)
-                IsLoadedTaskCompletionSource?.SetResult();
+            IsLoaded = true;
+            if (IsLoadedTaskCompletionSource?.Task is { IsCompleted: false })
+                IsLoadedTaskCompletionSource?.SetResult();  // complete
         }
 
 

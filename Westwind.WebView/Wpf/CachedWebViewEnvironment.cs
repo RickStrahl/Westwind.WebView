@@ -75,7 +75,7 @@ namespace Westwind.WebView.Wpf
         /// <param name="environment">Optionally pass in an existing configured environment</param>
         /// <returns></returns>
         /// <exception cref="WebViewInitializationException"></exception>
-        public async Task InitializeWebViewEnvironment(WebView2 webBrowser, CoreWebView2Environment environment = null)
+        public async Task InitializeWebViewEnvironment(WebView2 webBrowser, CoreWebView2Environment environment = null, string webViewEnvironemntPath = null)
         {
             try
             {
@@ -90,13 +90,15 @@ namespace Westwind.WebView.Wpf
 
                     if (environment == null)
                     {
-                        if (string.IsNullOrEmpty(Current.EnvironmentFolderName))
+                        var envPath = webViewEnvironemntPath ?? Current.EnvironmentFolderName;
+                        if (string.IsNullOrEmpty(envPath))
                             Current.EnvironmentFolderName = Path.Combine(Path.GetTempPath(),
                                 Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "_WebView");
 
                         // must create a data folder if running out of a secured folder that can't write like Program Files
                         environment = await CoreWebView2Environment.CreateAsync(userDataFolder: EnvironmentFolderName, 
-                            options: EnvironmentOptions);
+                            options: EnvironmentOptions);                        
+
                         Environment = environment;
                     }
                     
