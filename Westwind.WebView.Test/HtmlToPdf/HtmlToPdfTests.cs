@@ -21,7 +21,7 @@ namespace Westwind.WebView.Test.HtmlToPdf
             // File or URL to render
             //var url = "file:///C:/temp/TMPLOCAL/_MarkdownMonster_Preview.html";
             //var url = "C:\\temp\\TestReport.html";
-            var url = Path.GetFullPath("HtmlSampleFileLonger-SelfContained.html");
+            var url = Path.GetFullPath("./HtmlToPdf/HtmlSampleFileLonger-SelfContained.html");
 
 
             var htmlFile = url;
@@ -34,7 +34,7 @@ namespace Westwind.WebView.Test.HtmlToPdf
                 BackgroundHtmlColor = "#ffffff"
             };
             host.CssAndScriptOptions.KeepTextTogether = true;
-            host.CssAndScriptOptions.CssToInject = "h1 { color: red } h2 { color: green } h3 { color: goldenrod }";
+            //host.CssAndScriptOptions.CssToInject = "h1 { color: red } h2 { color: green } h3 { color: goldenrod }";
 
             var pdfPrintSettings = new WebViewPrintSettings()
             {
@@ -71,7 +71,7 @@ namespace Westwind.WebView.Test.HtmlToPdf
         public async Task PrintToPdfStreamAsyncTest()
         {
             var outputFile = Path.GetFullPath(@".\test3.pdf");
-            var htmlFile = Path.GetFullPath("HtmlSampleFileLonger-SelfContained.html");
+            var htmlFile = Path.GetFullPath("./HtmlToPdf/HtmlSampleFileLonger-SelfContained.html");
 
             var host = new HtmlToPdfHost()
             {
@@ -125,7 +125,7 @@ namespace Westwind.WebView.Test.HtmlToPdf
         public async Task PrintToPdfStreamTest()
         {
             // File or URL
-            var htmlFile = Path.GetFullPath("HtmlSampleFile-SelfContained.html");
+            var htmlFile = Path.GetFullPath("./HtmlToPdf/HtmlSampleFile-SelfContained.html");
 
             var tcs = new TaskCompletionSource<bool>();
 
@@ -183,7 +183,7 @@ namespace Westwind.WebView.Test.HtmlToPdf
         public async Task PrintToPdfFileTest()
         {
             // File or URL
-            var htmlFile = Path.GetFullPath("HtmlSampleFile-SelfContained.html");
+            var htmlFile = Path.GetFullPath("./HtmlToPdf/HtmlSampleFile-SelfContained.html");
             // Full Path to output file
             var outputFile = Path.GetFullPath(@".\test.pdf");
             File.Delete(outputFile);
@@ -219,7 +219,7 @@ namespace Westwind.WebView.Test.HtmlToPdf
         public async Task InjectedCssTest()
         {
             var outputFile = Path.GetFullPath(@".\test3.pdf");
-            var htmlFile = Path.GetFullPath("HtmlSampleFileLonger-SelfContained.html");
+            var htmlFile = Path.GetFullPath("./HtmlToPdf/HtmlSampleFileLonger-SelfContained.html");
 
             var host = new HtmlToPdfHost();
             //host.CssAndScriptOptions.KeepTextTogether = true;
@@ -249,7 +249,7 @@ namespace Westwind.WebView.Test.HtmlToPdf
             // File or URL to render
             //var url = "file:///C:/temp/TMPLOCAL/_MarkdownMonster_Preview.html";
             //var url = "C:\\temp\\TestReport.html";
-            var url = Path.GetFullPath("HtmlSampleFileLonger-SelfContained.html");
+            var url = Path.GetFullPath("./HtmlToPdf/HtmlSampleFileLonger-SelfContained.html");
 
 
             var htmlFile = url;
