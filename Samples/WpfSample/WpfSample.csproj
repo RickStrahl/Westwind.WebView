@@ -20,7 +20,7 @@
     <!--<PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />-->
     <PackageReference Include="FontAwesome6.Fonts" Version="2.5.1" />
     <PackageReference Include="MahApps.Metro" Version="2.4.10" />
-    <PackageReference Include="Westwind.Utilities" Version="5.0.5" />
+    <PackageReference Include="Westwind.Utilities" Version="5.1.7" />
 	  
 	<!-- Library Package that references Micrsoft.WebView2.Wpf    using old  Version="1.0.2592.51"  works -->  
 	<!--<PackageReference Include="Westwind.WebView" Version="0.1.21" />-->    

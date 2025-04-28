@@ -306,7 +306,7 @@ namespace Westwind.WebView.Test.HtmlToPdf
             Console.WriteLine(json);
 
             // Assert
-            Assert.IsTrue(json.Contains($"\"scale\":{expectedScale}"));
+            Assert.IsTrue(json.Contains($"\"scale\": {expectedScale}"));
         }
 
     }
