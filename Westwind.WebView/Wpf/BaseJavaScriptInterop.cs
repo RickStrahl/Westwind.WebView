@@ -124,7 +124,7 @@ namespace Westwind.WebView.Wpf
         /// <param name="parameters">Parameters to path or none</param>
         /// <returns>object result as specified by TResult type</returns>
         public async Task<TResult> Invoke<TResult>(string method, params object[] parameters)
-        {
+        {            
             StringBuilder sb = new StringBuilder();
             sb.Append(BaseInvocationTargetString + method + "(");
 
