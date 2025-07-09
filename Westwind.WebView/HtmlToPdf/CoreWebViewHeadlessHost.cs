@@ -478,7 +478,6 @@ public class DevToolsPrintToPdfSettings
 
 #if DEBUG        
         var json = JsonConvert.SerializeObject(this, Formatting.Indented);
-        Debug.WriteLine("PrintToPdf DevTools:\n" + json);
         return json;
 #endif
 
