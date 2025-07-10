@@ -1,5 +1,10 @@
 # Westwind.WebView Changelog
 
+### 0.3
+
+* **Add AllowHostInputProcessing to CachedEnvironment**  
+The cached environment now has an option to better pass through keyboard events from the browser to the host via a new option on the `CachedBrowserEnvironment.InitializeWebViewEnvironment()` method and the `allowHostInputProcessing` parameter.
+
 
 ### 0.2
 

@@ -48,7 +48,7 @@ namespace Westwind.WebView.Wpf
         /// Like the folder we recommend you set this early in your application startup.
         /// </summary>
         public CoreWebView2EnvironmentOptions EnvironmentOptions { get; set; }
-
+        
 
         /// <summary>
         /// Ensure only one instance initializes the environment at a time to avoid
@@ -73,13 +73,16 @@ namespace Westwind.WebView.Wpf
         /// </remarks>
         /// <param name="webBrowser">WebBrowser instance to set the environment on</param>
         /// <param name="environment">Optionally pass in an existing configured environment</param>
+        /// <param name="webViewEnvironmentPath">Optional path to the WebView environment folder.</param>
+        /// <param name="allowHostInputProcessing">If true, allows the host to process input events (ie. better transparency of browser keystrokes in host WPF app) .</param>
         /// <returns></returns>
         /// <exception cref="WebViewInitializationException"></exception>
-        public async Task InitializeWebViewEnvironment(WebView2 webBrowser, CoreWebView2Environment environment = null, string webViewEnvironemntPath = null)
+        public async Task InitializeWebViewEnvironment(WebView2 webBrowser, CoreWebView2Environment environment = null, 
+                                                       string webViewEnvironmentPath = null, 
+                                                       bool allowHostInputProcessing = false)
         {
             try
             {
-                
                 if (environment == null)
                     environment = Environment;
 
@@ -90,21 +93,29 @@ namespace Westwind.WebView.Wpf
 
                     if (environment == null)
                     {
-                        var envPath = webViewEnvironemntPath ?? Current.EnvironmentFolderName;
+                        var envPath = webViewEnvironmentPath ?? Current.EnvironmentFolderName;
                         if (string.IsNullOrEmpty(envPath))
                             Current.EnvironmentFolderName = Path.Combine(Path.GetTempPath(),
                                 Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "_WebView");
 
                         // must create a data folder if running out of a secured folder that can't write like Program Files
-                        environment = await CoreWebView2Environment.CreateAsync(userDataFolder: EnvironmentFolderName, 
-                            options: EnvironmentOptions);                        
+                        environment = await CoreWebView2Environment.CreateAsync(userDataFolder: EnvironmentFolderName,
+                            options: EnvironmentOptions);
 
                         Environment = environment;
                     }
-                    
+
                     _EnvironmentLoadLock.Release();
                 }
-                await webBrowser.EnsureCoreWebView2Async(environment);
+
+                if (allowHostInputProcessing)
+                {
+                    var opts = Environment.CreateCoreWebView2ControllerOptions();
+                    opts.AllowHostInputProcessing = true;                    
+                    await webBrowser.EnsureCoreWebView2Async(environment, opts);
+                }
+                else
+                    await webBrowser.EnsureCoreWebView2Async(environment);
             }
             catch (Exception ex)
             {
