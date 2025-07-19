@@ -98,6 +98,14 @@ namespace Westwind.WebView.HtmlToPdf
         public bool ShouldPrintHeaderAndFooter { get; set; } = false;
 
         
+        /// <summary>
+        /// Generates an internal document outline for the PDF
+        /// (ie. Bookmarks in the left Pdf Viewer panel)
+        /// 
+        /// This feature does not work in Server Mode due to the fact
+        /// that Developer Tools PDF printing is not supported in 
+        /// server operation.
+        /// </summary>
         public bool GenerateDocumentOutline { get; set; } = true;
 
 
