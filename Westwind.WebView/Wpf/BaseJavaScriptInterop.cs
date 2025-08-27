@@ -148,6 +148,46 @@ namespace Westwind.WebView.Wpf
             return (TResult) JsonConvert.DeserializeObject(result, resultType);
         }
 
+
+        /// <summary>
+        /// Safe version that doesn't throw and fails silently
+        /// Calls a method with simple or no parameters: string, boolean, numbers
+        /// </summary>
+        /// <param name="method">Method to call</param>
+        /// <param name="parameters">Parameters to path or none</param>
+        /// <returns>object result as specified by TResult type</returns>
+        public async Task<TResult> InvokeSafe<TResult>(string method, params object[] parameters)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(BaseInvocationTargetString + method + "(");
+
+            if (parameters != null)
+            {
+                for (var index = 0; index < parameters.Length; index++)
+                {
+                    object parm = parameters[index];
+                    var jsonParm = SerializeObject(parm);
+                    sb.Append(jsonParm);
+                    if (index < parameters.Length - 1)
+                        sb.Append(",");
+                }
+            }
+            sb.Append(")");
+
+            try
+            {
+                var cmd = sb.ToString();
+                string result = await WebBrowser.CoreWebView2.ExecuteScriptAsync(cmd);
+
+                Type resultType = typeof(TResult);
+                return (TResult)JsonConvert.DeserializeObject(result, resultType);
+            }
+            catch
+            {
+                return default(TResult);
+            }
+        }
+
         /// <summary>
         /// Calls a method with simple parameters: String, number, boolean
         /// This version returns no results.
@@ -174,6 +214,43 @@ namespace Westwind.WebView.Wpf
             sb.Append(")");
 
             await WebBrowser.CoreWebView2.ExecuteScriptAsync(sb.ToString());
+        }
+
+        /// <summary>
+        /// Safe version that fails silently and doesn't throw
+        /// Calls a method with simple parameters: String, number, boolean
+        /// This version returns no results.
+        /// </summary>
+        /// <param name="method"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public async Task<bool> InvokeSafe(string method, params object[] parameters)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(BaseInvocationTargetString + method + "(");
+
+            if (parameters != null)
+            {
+                for (var index = 0; index < parameters.Length; index++)
+                {
+                    object parm = parameters[index];
+                    var jsonParm = SerializeObject(parm);
+                    sb.Append(jsonParm);
+                    if (index < parameters.Length - 1)
+                        sb.Append(",");
+                }
+            }
+            sb.Append(")");
+            try
+            {
+                await WebBrowser.CoreWebView2.ExecuteScriptAsync(sb.ToString());
+            }
+            catch
+            {                
+                // ignore the error
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
