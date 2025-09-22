@@ -27,8 +27,18 @@ namespace WpfSample
     public partial class BasicInterop : MetroWindow
     {
         BasicInteropWebviewHandler WebViewHandler { get;  }
-        
-        
+
+        /// <summary>
+        /// Allows Events from the WebView to fire into WPF before
+        /// the WebView gets it.
+        /// 
+        /// For debugging set to True to demonstrate scroll bug
+        /// 
+        /// This eventually gets set on the WebView in WebViewHandler.InitializeAsync()
+        /// and CachedWebViewEnvironment.InitializeEnvironment() (set breakpoints in InitializeAsync())
+        /// </summary>
+        public bool AllowInputHostMapping { get; set; } = true;
+
         public BasicInterop()
         {
             InitializeComponent();
@@ -38,7 +48,6 @@ namespace WpfSample
             DataContext = Model;
 
             Loaded += BasicInterop_Loaded;
-
 
 #if DEBUG
             // for debug use your actual dev source path for the HTML content so you can F5 reload without restart
@@ -68,9 +77,11 @@ namespace WpfSample
                 JsInterop = new BasicInteropWebViewInterop(WebBrowser),
 
                 // Initial page to load after loading is complete - ensures no invalid URL before host is assigned
-                InitialUrl = url
-            };
+                InitialUrl = url,
 
+                // Fire Events in WPF before WebView gets them
+                AllowHostInputProcessing = this.AllowInputHostMapping
+            };
         }
 
         public BasicInteropModel Model  { get; set; }
@@ -292,11 +303,10 @@ namespace WpfSample
             base(webViewBrowser, webViewEnvironmentFolder, dotnetCallbackObject)
         {
             JsInterop = new BasicInteropWebViewInterop(webViewBrowser);
-            HostObject = JsInterop;
+            HostObject = JsInterop;            
         }
 
     }
-
 
     public class BasicInteropWebViewInterop : BaseJavaScriptInterop
     {

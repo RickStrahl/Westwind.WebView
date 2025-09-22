@@ -58,6 +58,25 @@ namespace Westwind.WebView.Wpf
 
 
         /// <summary>
+        /// Send WebView Events through to host (WPF/WinForms) control
+        /// before passing to Web document. 
+        /// 
+        /// Use this if you need to interact heavily with the host for 
+        /// things like menu and button accellerators or key pass through
+        /// events (auto-submit of dialogs or forms etc.).        
+        /// 
+        /// Can have side effects in how events process:
+        /// * Tab key behavior
+        /// * ESC key behavior
+        /// * Scroll Selection Events
+        /// </summary>
+        /// <remarks>
+        /// IMPORTANT: This property has to be set in the class initializer
+        /// in order to get fired at the right time.
+        /// </remarks>
+        public bool AllowHostInputProcessing { get; set; }
+
+        /// <summary>
         /// Optionally you can pass in an already created WebView Environment.
         /// IMPORTANT: You must set this value in the CTOR call
         /// ie. `new WebViewEnvironment&lt;T&gt;(...) { WebViewEnvironment = env}`
@@ -244,7 +263,7 @@ namespace Westwind.WebView.Wpf
             //            WebView controls are used
             // _ = WebBrowser.Dispatcher.InvokeAsync( async () =>  InitializeAsync().FireAndForget);   // don't use!
             // WebBrowser.Dispatcher.Invoke(  ()=>  InitializeAsync().FireAndForget(), DispatcherPriority.Loaded );
-            WebBrowser.Dispatcher.Invoke(() => InitializeAsync().FireAndForget(), DispatcherPriority.Loaded);
+            WebBrowser.Dispatcher.InvokeAsync(() => InitializeAsync().FireAndForget(), DispatcherPriority.Loaded).Task.FireAndForget();
         }
 
         /// <summary>
@@ -252,7 +271,7 @@ namespace Westwind.WebView.Wpf
         /// you call base() to call original functionality
         /// </summary>
         /// <returns></returns>
-        protected async Task InitializeAsync()
+        protected virtual async Task InitializeAsync()
         {
             if (JsInterop == null)
                 JsInterop = CreateJsInteropInstance();
@@ -262,7 +281,7 @@ namespace Westwind.WebView.Wpf
             //            waits until the visibility changes.
             if (!IsInitialized)  // Ensure this doesn't run more than once
             {
-                await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser, WebViewEnvironment, WebViewEnvironmentFolder);
+                await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser, WebViewEnvironment, WebViewEnvironmentFolder, allowHostInputProcessing: AllowHostInputProcessing);
 
                 IsInitialized = true;
                 IsInitializedTaskCompletionSource.SetResult();

@@ -74,7 +74,8 @@ namespace Westwind.WebView.Wpf
         /// <param name="allowHostInputProcessing">If true, allows the host to process input events (ie. better transparency of browser keystrokes in host WPF app) .</param>
         /// <returns></returns>
         /// <exception cref="WebViewInitializationException"></exception>
-        public async Task InitializeWebViewEnvironment(WebView2 webBrowser, CoreWebView2Environment environment = null, 
+        public async Task 
+            InitializeWebViewEnvironment(WebView2 webBrowser, CoreWebView2Environment environment = null, 
                                                        string webViewEnvironmentPath = null, 
                                                        bool allowHostInputProcessing = false)
         {
@@ -92,7 +93,7 @@ namespace Westwind.WebView.Wpf
                     {
                         var envPath = webViewEnvironmentPath ?? Current.EnvironmentFolderName;
                         if (string.IsNullOrEmpty(envPath))
-                            Current.EnvironmentFolderName = Path.Combine(Path.GetTempPath(),
+                                Current.EnvironmentFolderName = Path.Combine(Path.GetTempPath(),
                                 Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "_WebView");
 
                         // must create a data folder if running out of a secured folder that can't write like Program Files
