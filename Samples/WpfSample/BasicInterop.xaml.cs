@@ -37,7 +37,7 @@ namespace WpfSample
         /// This eventually gets set on the WebView in WebViewHandler.InitializeAsync()
         /// and CachedWebViewEnvironment.InitializeEnvironment() (set breakpoints in InitializeAsync())
         /// </summary>
-        public bool AllowInputHostMapping { get; set; } = true;
+        public bool AllowInputHostMapping { get; set; } = false;
 
         public BasicInterop()
         {
