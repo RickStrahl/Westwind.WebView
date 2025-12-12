@@ -470,7 +470,7 @@ public class DevToolsPrintToPdfSettings
     public bool preferCSSPageSize { get; set; } = false;
     public bool generateDocumentOutline { get; set; } = true;
 
-    public string ToJson()
+    public string ToJson(bool formatted = false)
     {
         pageRanges = pageRanges ?? string.Empty;
         headerTemplate = headerTemplate ?? string.Empty;
@@ -480,7 +480,7 @@ public class DevToolsPrintToPdfSettings
         var json = JsonConvert.SerializeObject(this, Formatting.Indented);
         return json;
 #else
-        return JsonConvert.SerializeObject(this, Formatting.None);
+        return JsonConvert.SerializeObject(this, formatted ? Formatting.Indented : Formatting.None);
 #endif
 
     }

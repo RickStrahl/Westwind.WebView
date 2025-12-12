@@ -301,7 +301,7 @@ namespace Westwind.WebView.Test.HtmlToPdf
             CultureInfo.CurrentCulture = new CultureInfo("de-de");
 
             // Act
-            var json = settings.ToJson();
+            var json = settings.ToJson(true);
 
             Console.WriteLine(json);
 
