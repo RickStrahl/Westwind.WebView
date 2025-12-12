@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Samples/">
+    <Project Path="Samples/AspNetHtmlToPdfSample/AspNetHtmlToPdfSample.csproj" />
+    <Project Path="Samples/ConsoleHtmlToPdfSample/ConsoleHtmlToPdfSample.csproj" />
+    <Project Path="Samples/WpfSample/WpfSample.csproj" />
+  </Folder>
+  <Folder Name="/Solution Files/">
+    <File Path="HtmlToPdf.md" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="Westwind.WebView.Test/Westwind.WebView.Test.csproj" />
+  <Project Path="Westwind.WebView/Westwind.WebView.csproj" />
+</Solution>
