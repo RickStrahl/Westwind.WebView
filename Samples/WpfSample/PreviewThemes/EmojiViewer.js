@@ -1,3 +1,4 @@
+debugger;
 var page = {
 
     dotnet: {
@@ -10,14 +11,13 @@ var page = {
         isDotnet: function() {
             return window.chrome.webview.hostObjects ? true : false;
         },
-        emojiUpdated: function(iconText){
+        emojiUpdated: async function(iconText){
             page.dotnet.getDotnet().EmojiUpdated(iconText ?? '');
         }
     },
     initialize: function(mode) {
-        $(".emoji-container").on("click", "a", function() {            
-            var $el = $(this);
-            var iconText = this.title;
+        $(".emoji-container").on("click", "a", function (e) {
+            const iconText = this.title ?? '';
 
             if (iconText){                
                 if (page.dotnet.isDotnet()) {
@@ -26,17 +26,22 @@ var page = {
                 else
                     alert('selected ' + iconText);
             }
+            e.preventDefault();
         });
-        $("#Search").focus();
+        $(document.body).on("contextmenu", function (e) {           
+            e.preventDefault();
+        })
+        .on("contextmenu", "a", function (e) {
+            const iconText = this.title ?? '';
+ 
+            if (iconText) {
+                if (page.dotnet.isDotnet()) {
+                    page.dotnet.emojiUpdated(iconText , true);  // clipobard
+                }
+            }
 
-        var keyupFn = debounce(page.searchEmoji, 150);
-        $("#Search")
-            .keyup( keyupFn )
-            .keydown(function (e) {
-                var key = e.keyCode;                
-                if (key == 8 || key == 46) // backspace
-                   keyupFn();                            
-            });
+            e.preventDefault();
+        });
 
 
         
@@ -46,19 +51,29 @@ var page = {
         if (typeof search !== "string")
             search = this.value;
 
-        $(".emoji-container>a").show();        
+        var $items = $(".emoji-container>a");
+        var total = $items.length;
+
+        // show all
+        $items.show();
         if (!search) {
-            return; 
+            return total; 
         }
 
-        $(".emoji-container>a").each(function() {
-            var title = this.title;       
-            
-            if (title.toLowerCase().indexOf(search.toLowerCase()) > -1)
-              return;
+        var count = 0;
+        for (var i = 0; i < total; i++) {
+            var a$ = $items[i];
+            var title = a$.title;
 
-            this.style.display = "none";
-        });            
+            if (title.toLowerCase().indexOf(search.toLowerCase()) > -1) {
+                count++;
+                continue;
+            }
+                        
+            a$.style.display = "none";
+        }
+
+        return count;           
     }
 };  // page
 

@@ -97,12 +97,14 @@ namespace WpfSample
                 HostWebRootFolder = previewPath,
                 ShowDevTools = false,  // show dev tools on startup
 
-                // if using a custom interop handler assign and configure here
-                JsInterop = new EmojiWebViewInterop(WebBrowser),
-
                 // Initial page to load after loading is complete - ensures no invalid URL before host is assigned
                 InitialUrl = url
             };
+
+            // if using a custom interop handler assign and configure here
+            // Handled in the custom CTOR
+            // WebViewHandler.JsInterop = new EmojiWebViewInterop(WebBrowser);
+            // WebViewHandler.HostObject = WebViewHandler.JsInterop;
 
             Loaded += EmojiWindow_Loaded;
 
@@ -199,7 +201,8 @@ namespace WpfSample
             object dotnetCallbackObject = null) :
             base(webViewBrowser, webViewEnvironmentFolder, dotnetCallbackObject)
         {
-            //JsInterop = new EmojiWebViewInterop(webViewBrowser);
+            // In and outbound use the same object
+            JsInterop = new EmojiWebViewInterop(webViewBrowser);
             HostObject = JsInterop;
         }
 
@@ -256,10 +259,11 @@ namespace WpfSample
         /// Callback that receives the selected Emoji value on a click,
         /// </summary>
         /// <param name="emojiValue"></param>
-        public void EmojiUpdated(string emojiValue)
+        public Task<bool> EmojiUpdated(string emojiValue)
         {
             var window = WebBrowser.TryFindParent<Window>() as EmojiWindow;
             window.SelectEmoji(emojiValue);
+            return Task.FromResult(false);
         }
 
 

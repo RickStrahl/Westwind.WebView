@@ -7,20 +7,30 @@
     <title>Markdown Monster Emoji Picker</title>
     <link href="Westwind/Theme.css" rel="stylesheet" />
     <style>
-        html,
-        body {
+        html, body {
             margin: 0;
             padding: 0 0 0 0;
-            font-size: 1.2em;
+            font-size: 18px;
             color: #eee;
             background: #333;
+            user-select: none;
         }
 
-        emoji-item {
+        body {
+            overflow-y: auto;
+        }
+
+        .emoji-container.light {
+            color: #111;
+            background: white;
+        }
+
+        .emoji-item {
             float: left;
             width: 30px;
             margin: 0.2em;
         }
+
 
         table {
             margin: 0 !important;
@@ -28,7 +38,7 @@
             padding: 0;
         }
 
-        div>code {
+        div > code {
             font-size: 0.65em
         }
 
@@ -66,27 +76,48 @@
             outline: 0;
         }
 
+
         .emoji-container {
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
         }
 
-        .emoji-container>a {
-            display: block;
-            margin: 0.2em;
-            width: 1.8em;
-            text-align: center;
-            overflow: hidden;
-            border: solid 1px #555;
-            border-radius: 4px;
-            text-decoration: none;            
+            .emoji-container > a {
+                margin: 0.12em;
+                width: 1.7em;
+                text-align: center;
+                border: none 1px #555;
+                border-radius: 4px;
+                text-decoration: none;
+                font-size: 1.2em;
+                display: none;
+            }
+
+                .emoji-container > a:hover {
+                    background: #676767;
+                }
+
+        @media(max-width: 600px) {
+            .emoji-container > a {
+                font-size: 1em;
+            }
         }
 
-        .emoji-container>a:hover {
-            background: #777;
+
+        body::-webkit-scrollbar {
+            width: 6px;
+            /* background: #eee; */
         }
 
+        body::-webkit-scrollbar-thumb {
+            background: #999;
+            border-radius: 0.2em;
+        }
+
+        body.light::-webkit-scrollbar {
+            background: #bbb;
+        }
     </style>
 </head>
 
@@ -1710,10 +1741,23 @@
         if (location.href.indexOf("mode=dark") < 1) {
             document.body.style.color = "#000";
             document.body.style.background = "#fff";
+    }
+        // display only 'first page of icons' to make for faster initial load
+        var list = document.querySelectorAll(".emoji-container>a");
+        var len = list.length;
+        for (let i = 0; i < 80; i++) {
+            list[i].style.display = "block";
         }
+
+        // load the rest later
+        setTimeout(() => {
+            for (let i = 79; i < len; i++) {
+                list[i].style.display = "block";
+            }
+        }, 10);
 </script>
-    <script src="scripts/jquery.min.js"></script>
-    <script src="EmojiViewer.js"></script>
+<script src="scripts/jquery.min.js"></script>
+<script src="EmojiViewer.js"></script>
     
 </body>
 

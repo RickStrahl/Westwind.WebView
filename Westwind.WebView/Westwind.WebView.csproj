@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
+		<Version>0.3.9</Version>
 		<TargetFrameworks>net10.0-windows;net8.0-windows;net472;</TargetFrameworks>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
-		<LangVersion>Latest</LangVersion>
-		<Version>0.3.8</Version>
+		<LangVersion>Latest</LangVersion>		
 		<Authors>Rick Strahl</Authors>
 		<Nullable>disable</Nullable>
 		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
