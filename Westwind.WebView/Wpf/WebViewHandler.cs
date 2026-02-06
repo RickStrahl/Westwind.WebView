@@ -439,8 +439,15 @@ namespace Westwind.WebView.Wpf
 
             if (forceRefresh)
             {
-                WebBrowser.Source = new Uri("about:blank"); //  can't be null, has to be a uri
-                WebBrowser.Dispatcher.Invoke(() => WebBrowser.Source = uri);
+                WebBrowser.Source = new Uri("about:blank");
+                try
+                {
+                    await WebBrowser.CoreWebView2.Profile.ClearBrowsingDataAsync(CoreWebView2BrowsingDataKinds.DiskCache);
+                }catch 
+                {
+                    await Task.Yield();
+                }
+                WebBrowser.Source = uri;
                 return;
             }
 
@@ -532,21 +539,20 @@ namespace Westwind.WebView.Wpf
         /// <param name="noCache"></param>
         public void Refresh(bool noCache = false)
         {
-            if (!IsInitialized) return;
-            
+            if (!IsInitialized | string.IsNullOrEmpty(WebBrowser.Source?.ToString())) 
+                return;
+
             IsLoaded = false;
             if (noCache)
             {
-                var source = WebBrowser.Source;
-                WebBrowser.Source = new Uri("about:blank");  //  can't be null, has to be a uri
-                var url = WebBrowser.Source?.ToString();
-                if (!string.IsNullOrEmpty(url))
+                WebBrowser.Dispatcher.InvokeAsync(async () =>
                 {
-                    WebBrowser.Dispatcher.Invoke(() => WebBrowser.Source = new Uri(url));
-                    return;
-                }
+                    await WebBrowser.CoreWebView2.CallDevToolsProtocolMethodAsync("Network.clearBrowserCache", "{}");
+                    WebBrowser.CoreWebView2.Reload();
+                }, DispatcherPriority.Normal).Task.FireAndForget();
+                return;
+
             }
-            
             WebBrowser.CoreWebView2.Reload();
         }
 

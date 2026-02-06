@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Version>0.3.9</Version>
+		<Version>0.3.10</Version>
 		<TargetFrameworks>net10.0-windows;net8.0-windows;net472;</TargetFrameworks>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
@@ -17,14 +17,14 @@
 		<Title>West Wind WebView Interop Helpers</Title>
 		<Description>A .NET library to aid WebView2 control hosting, .NET/JavaScript interop and Html to Pdf Conversion</Description>
 		<Summary>A .NET library to aid WebView2 control hosting, .NET/JavaScript interop and Html to Pdf Conversion.</Summary>
-		<PackageCopyright>Rick Strahl, West Wind Technologies 2023-2025</PackageCopyright>
+		<PackageCopyright>Rick Strahl, West Wind Technologies 2023-2026</PackageCopyright>
 		<PackageTags>WebView Westwind</PackageTags>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<PackageProjectUrl>http://github.com/rickstrahl/westwind.webview</PackageProjectUrl>
 		<PackageIcon>icon.png</PackageIcon>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<Copyright>Rick Strahl, West Wind Technologies, 2023-2025</Copyright>
+		<Copyright>Rick Strahl, West Wind Technologies, 2023-2026</Copyright>
 		<RepositoryType>Github</RepositoryType>
 		<Company>West Wind Technologies</Company>
 		<RepositoryUrl>https://github.com/RickStrahl/Westwind.WebView</RepositoryUrl>
@@ -42,7 +42,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3650.58" />		
+		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />		
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 	</ItemGroup>
 	
