@@ -614,6 +614,11 @@ namespace Westwind.WebView.Wpf
         }
 
 
+        public Task ClearCache()
+        {
+            return WebBrowser.CoreWebView2.Profile.ClearBrowsingDataAsync(CoreWebView2BrowsingDataKinds.DiskCache);
+        }
+
         public virtual void Dispose()
         {
             WebBrowser?.Dispose();
