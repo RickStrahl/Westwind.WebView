@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -75,6 +75,13 @@ namespace Westwind.WebView.Wpf
         /// in order to get fired at the right time.
         /// </remarks>
         public bool AllowHostInputProcessing { get; set; }
+
+
+        /// <summary>
+        /// Optional - specify the WebView runtime folder from which a local custom runtime 
+        /// is loaded. Default is `null` which uses the system default location if installed.
+        /// </summary>
+        public string BrowserExecutableFolder { get; set; } 
 
         /// <summary>
         /// Optionally you can pass in an already created WebView Environment.
@@ -275,7 +282,9 @@ namespace Westwind.WebView.Wpf
             //            waits until the visibility changes.
             if (!IsInitialized)  // Ensure this doesn't run more than once
             {
-                await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser, WebViewEnvironment, WebViewEnvironmentFolder, allowHostInputProcessing: AllowHostInputProcessing);
+                await CachedWebViewEnvironment.Current.InitializeWebViewEnvironment(WebBrowser, WebViewEnvironment, WebViewEnvironmentFolder, 
+                                             allowHostInputProcessing: AllowHostInputProcessing, 
+                                             browserExecutableFolder: BrowserExecutableFolder);
 
                 IsInitialized = true;
                 IsInitializedTaskCompletionSource.SetResult();

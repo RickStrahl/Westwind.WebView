@@ -1,4 +1,4 @@
-﻿using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using System;
 using System.IO;
@@ -41,6 +41,13 @@ namespace Westwind.WebView.Wpf
         public string EnvironmentFolderName { get; set; }
 
         /// <summary>
+        /// Executable folder location for the WebView runtime.
+        /// If not set (default) the system will look for the runtime in the default install location     
+        /// </summary>
+        public string BrowserExecutableFolder { get; set; }
+
+
+        /// <summary>
         /// Optional WebView Environment options that can be set before the environment is created.
         /// Like the folder we recommend you set this early in your application startup.
         /// </summary>
@@ -74,10 +81,10 @@ namespace Westwind.WebView.Wpf
         /// <param name="allowHostInputProcessing">If true, allows the host to process input events (ie. better transparency of browser keystrokes in host WPF app) .</param>
         /// <returns></returns>
         /// <exception cref="WebViewInitializationException"></exception>
-        public async Task 
-            InitializeWebViewEnvironment(WebView2 webBrowser, CoreWebView2Environment environment = null, 
+        public async Task InitializeWebViewEnvironment(WebView2 webBrowser, CoreWebView2Environment environment = null, 
                                                        string webViewEnvironmentPath = null, 
-                                                       bool allowHostInputProcessing = false)
+                                                       bool allowHostInputProcessing = false, 
+                                                       string browserExecutableFolder = null)                
         {
             try
             {
@@ -97,7 +104,8 @@ namespace Westwind.WebView.Wpf
                                 Path.GetFileNameWithoutExtension(Assembly.GetEntryAssembly().Location) + "_WebView");
 
                         // must create a data folder if running out of a secured folder that can't write like Program Files
-                        environment = await CoreWebView2Environment.CreateAsync(userDataFolder: EnvironmentFolderName,
+                        environment = await CoreWebView2Environment.CreateAsync(userDataFolder: EnvironmentFolderName,                                       
+                            browserExecutableFolder: browserExecutableFolder,
                             options: EnvironmentOptions);
 
                         Environment = environment;
