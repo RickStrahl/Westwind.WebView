@@ -37,7 +37,7 @@ namespace WpfSample
         /// This eventually gets set on the WebView in WebViewHandler.InitializeAsync()
         /// and CachedWebViewEnvironment.InitializeEnvironment() (set breakpoints in InitializeAsync())
         /// </summary>
-        public bool AllowInputHostMapping { get; set; } = true;
+        public bool AllowInputHostMapping { get; set; } = false;
 
         public BasicInterop()
         {
@@ -71,7 +71,7 @@ namespace WpfSample
                 // virutal host name for the folder
                 HostWebHostNameForFolder = "WebViewSample.basicinterop",
                 HostWebRootFolder = previewPath,
-                ShowDevTools = true, // show dev tools on startup
+                ShowDevTools = false, // show dev tools on startup
 
                 // if using a custom interop handler assign and configure here                
                 JsInterop = new BasicInteropWebViewInterop(WebBrowser),

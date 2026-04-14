@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using MahApps.Metro.Controls;
+using Westwind.WebView.Wpf;
 
 namespace WpfSample
 {
@@ -19,6 +20,12 @@ namespace WpfSample
             
             ThemeOverride.SetThemeWindowOverride(this, "Dark");
             DataContext = Model;
+
+
+            txtRuntimeVersions.Text = $"Runtime Versions:\n" +
+                                           $" - .NET: {System.Environment.Version}\n" +
+                                           $" - WebView Runtime:  {WebViewUtilities.GetWebViewRuntimeVersion()}\n" +
+                                           $" - WebView SDK: {WebViewUtilities.GetWebViewRuntimeVersion(true)}\n";
         }
         
 

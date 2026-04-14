@@ -1,4 +1,4 @@
-﻿<mah:MetroWindow x:Class="WpfSample.MainWindow"
+<mah:MetroWindow x:Class="WpfSample.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,11 +11,11 @@
         TitleCharacterCasing="Normal"
         Title="Westind.WebView Samples" 
         FontSize="17"
-        Height="450" Width="800">
+        Height="470" Width="800">
     <Grid>
-        <StackPanel Margin="50"   HorizontalAlignment="Center" Width="200">
+        <StackPanel Margin="50"   HorizontalAlignment="Center" Width="500">
 
-            <Button Name="btnSimple" Height="35" FontSize="12" Margin="0 12"
+            <Button Name="btnSimple" Height="35" FontSize="12" Margin="100 12"
                     Click="BtnSimple_OnClick">
                 <StackPanel Orientation="Horizontal">
                     <fa6:FontAwesome FontSize="17"  Icon="Solid_CircleCheck" Foreground="Green" Margin="0 0 10 0"/>
@@ -25,7 +25,7 @@
                 </StackPanel>
             </Button>
 
-            <Button Name="btnEmoji" Click="BtnEmoji_OnClick" Height="35" FontSize="12">
+            <Button Name="btnEmoji" Click="BtnEmoji_OnClick" Height="35" FontSize="12" Margin="100 0">
                 <StackPanel Orientation="Horizontal">
                     <fa6:FontAwesome FontSize="17"  Name="StatusIcon" Icon="Regular_FaceSmile" Foreground="Goldenrod" Margin="0 0 10 0"/>
                     <TextBlock>
@@ -33,12 +33,17 @@
                     </TextBlock>
                 </StackPanel>
             </Button>
-            <TextBox Name="txtSearchFor" Margin="0 2"
+            <TextBox Name="txtSearchFor" Margin="100 2"
                      Text="{Binding EmojiSearchText}"
                      mah:TextBoxHelper.Watermark="search for emoji" />
 
-            <Separator Margin="0 20" />
-            
+            <TextBlock TextWrapping="Wrap" x:Name="txtRuntimeVersions" Margin="100 30 100 0">
+                
+            </TextBlock> 
+
+
+            <Separator Margin="0 0 0 15" />
+
             <Button Name="btnTest" Click="BtnTest_OnClick" Height="35" FontSize="12">
                 <StackPanel Orientation="Horizontal">
                     <fa6:FontAwesome FontSize="17"  Icon="Solid_Gear" Foreground="SteelBlue" Margin="0 0 10 0"/>
