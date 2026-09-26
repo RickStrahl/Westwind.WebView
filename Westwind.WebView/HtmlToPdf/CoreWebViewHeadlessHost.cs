@@ -1,4 +1,4 @@
-﻿using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Core;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -205,10 +205,11 @@ protected async void InitializeAsync()
                 File.Delete(_outputFile);
             }
 
-            if (HtmlToPdfHost.DelayPdfGenerationMs > 0)
-            {
-                await Task.Delay(HtmlToPdfHost.DelayPdfGenerationMs);
-            }
+            // Brief time to allow the page to fully render before printing.            
+            if (HtmlToPdfHost.DelayPdfGenerationMs > 0)            
+                await Task.Delay(HtmlToPdfHost.DelayPdfGenerationMs);            
+            else
+                await Task.Delay(100);
 
             try
             {
@@ -277,6 +278,11 @@ protected async void InitializeAsync()
         /// <returns></returns>
         internal async Task<Stream> PrintToPdfStream()
         {
+
+            if (HtmlToPdfHost.DelayPdfGenerationMs > 0)
+            {
+                await Task.Delay(HtmlToPdfHost.DelayPdfGenerationMs);
+            }
 
             // THIS WORKS ON FIRST REQUEST IN IIS
             try
